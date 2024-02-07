@@ -182,3 +182,12 @@ class SetNewPasswordView(View):
         except DjangoUnicodeDecodeError as identifier:
             messages.error(request, "Một lỗi đã xảy ra, vui lòng thử lại")
             return render(request, 'set-new-password.html', context)
+        
+def index(request):
+    return render(request, 'profile.html')
+
+def edit_profile(request):
+    return render(request, "editprofile.html")
+
+def feedback_user(request):
+    return render(request, "feedback.html")
