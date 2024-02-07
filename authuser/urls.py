@@ -2,9 +2,8 @@ from django.urls import path
 from authuser import views
 
 urlpatterns = [
-    path('', views.index, name='profile_user'),
-    path('/edit', views.edit_profile, name='edit_profile_user'),
-    path('/feedback', views.feedback_user, name='feedback_user'),
+    path('', views.edit_profile, name='edit_profile_user'),
+    path('feedback/', views.feedback_user, name='feedback_user'),
     path('login/', views.handleLogin, name='login'),
     path('logout/', views.logout, name='logout'),
     path('signup/', views.signup, name='signup'),
