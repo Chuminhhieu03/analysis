@@ -1,0 +1,39 @@
+.message_Container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+}
+/* create a animation slide from right on off by class active */
+.message_Container.active {
+    animation: slideIn 0.5s forwards;
+}
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+.message_Container{
+    animation: slideOut 0.5s forwards;
+}
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+.bg-alert{
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+.bg-check{
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
