@@ -191,3 +191,9 @@ def edit_profile(request):
 
 def feedback_user(request):
     return render(request, "feedback.html")
+
+def changepassword(request):
+    return render(request, 'changepassword.html')
+
+def upgrade(request):
+    return render(request, 'upgrade.html')
