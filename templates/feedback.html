@@ -5,10 +5,14 @@
 
 <div class="content-wrapper">
   <div class="row">
-    <div class="col-md-6 grid-margin stretch-card">
+    <div class="offset-margin col-lg-8 col-md-8 col-sm-12 col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Feedback form</h4>
+          <h4 class="card-title">Ý kiến khách hàng</h4>
+          <p class="card-description">
+            Khách hàng có thể gửi các ý kiến 
+            phản hồi tại đây.
+          </p>
           <form class="forms-sample">
             <div class="form-group">
               <label for="exampleInputUsername1">Title</label>
@@ -21,17 +25,18 @@
             <div class="form-group">
               <label for="exampleFormControlTextarea1">Content</label>
               <textarea
-                class="form-control form-control-lg"
+                class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="5"
+                style="height: 100px;"
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <button class="btn btn-light">Cancel</button>
+            <button type="submit" class="btn btn-primary me-2">Xác nhận</button>
+            <button class="btn btn-light">Hủy</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-</div>
+  </div>
 {% endblock content %}

@@ -10,7 +10,7 @@
         <div class="col-xl-4">
           <!-- Profile picture card-->
           <div class="card mb-4 mb-xl-0">
-            <div class="card-header">Profile Picture</div>
+            <div class="card-header">Ảnh Đại Diện</div>
             <div class="card-body text-center">
               <!-- Profile picture image-->
               <img
@@ -23,55 +23,45 @@
                 JPG or PNG no larger than 5 MB
               </div>
               <!-- Profile picture upload button-->
-              <button class="btn btn-primary" type="button">
-                Upload new image
-              </button>
+              <div class="form-group">
+                <label class="btn btn-primary">
+                  Tải ảnh lên<input type="file" style="display: none;">
+                </label>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-xl-8">
           <!-- Account details card-->
           <div class="card mb-4">
-            <div class="card-header">Account Details</div>
+            <div class="card-header">Thông tin tài khoản</div>
             <div class="card-body">
               <form>
                 <!-- Form Group (username)-->
                 <div class="mb-3">
                   <label class="small mb-1" for="inputUsername"
-                    >Username (how your name will appear to other users on the
-                    site)</label
+                    >Tên Đăng Nhập</label
                   >
                   <input
                     class="form-control"
                     id="inputUsername"
                     type="text"
-                    placeholder="Enter your username"
+                    placeholder="Nhập vào tên đăng nhập"
                   />
                 </div>
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
-                  <!-- Form Group (first name)-->
-                  <div class="col-md-6">
-                    <label class="small mb-1" for="inputFirstName"
-                      >First name</label
-                    >
-                    <input
-                      class="form-control"
-                      id="inputFirstName"
-                      type="text"
-                      placeholder="Enter your first name"
-                    />
-                  </div>
+                  
                   <!-- Form Group (last name)-->
-                  <div class="col-md-6">
+                  <div class="mb-3">
                     <label class="small mb-1" for="inputLastName"
-                      >Last name</label
+                      >Họ Và Tên</label
                     >
                     <input
                       class="form-control"
                       id="inputLastName"
                       type="text"
-                      placeholder="Enter your last name"
+                      placeholder="Nhập vào họ và tên"
                     />
                   </div>
                 </div>
@@ -80,38 +70,38 @@
                   <!-- Form Group (organization name)-->
                   <div class="col-md-6">
                     <label class="small mb-1" for="inputOrgName"
-                      >Organization name</label
+                      >Tên Công Ty</label
                     >
                     <input
                       class="form-control"
                       id="inputOrgName"
                       type="text"
-                      placeholder="Enter your organization name"
+                      placeholder="Nhập vào tên công ty của bạn"
                     />
                   </div>
                   <!-- Form Group (location)-->
                   <div class="col-md-6">
                     <label class="small mb-1" for="inputLocation"
-                      >Location</label
+                      >Địa Chỉ</label
                     >
                     <input
                       class="form-control"
                       id="inputLocation"
                       type="text"
-                      placeholder="Enter your location"
+                      placeholder="Nhập vào địa chỉ của bạn"
                     />
                   </div>
                 </div>
                 <!-- Form Group (email address)-->
                 <div class="mb-3">
                   <label class="small mb-1" for="inputEmailAddress"
-                    >Email address</label
+                    >Email</label
                   >
                   <input
                     class="form-control"
                     id="inputEmailAddress"
                     type="email"
-                    placeholder="Enter your email address"
+                    placeholder="Nhập vào địa chỉ email"
                   />
                 </div>
                 <!-- Form Row-->
@@ -119,32 +109,36 @@
                   <!-- Form Group (phone number)-->
                   <div class="col-md-6">
                     <label class="small mb-1" for="inputPhone"
-                      >Phone number</label
+                      >Số Điện Thoại</label
                     >
                     <input
                       class="form-control"
                       id="inputPhone"
                       type="tel"
-                      placeholder="Enter your phone number"
+                      placeholder="Nhập vào số điện thoại "
                     />
                   </div>
                   <!-- Form Group (birthday)-->
                   <div class="col-md-6">
                     <label class="small mb-1" for="inputBirthday"
-                      >Birthday</label
+                      >Ngày Sinh</label
                     >
-                    <input
-                      class="form-control"
-                      id="inputBirthday"
-                      type="text"
-                      name="birthday"
-                      placeholder="Enter your birthday"
-                    />
+                    
+                    <div class="col-md-6">
+                      <li class="nav-item d-none d-lg-block">
+                        <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                          <span class="input-group-addon input-group-prepend border-right">
+                            <span class="icon-calendar input-group-text calendar-icon"></span>
+                          </span>
+                          <input type="text" class="form-control">
+                        </div>
+                      </li>
+                    </div>
                   </div>
                 </div>
                 <!-- Save changes button-->
                 <button class="btn btn-primary" type="button">
-                  Save changes
+                  Lưu thay đổi
                 </button>
               </form>
             </div>
