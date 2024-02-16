@@ -26,32 +26,29 @@
 
   <!-- My Css  -->
   <link rel="stylesheet" href="{% static '/css/tuyen.css' %} ">
+  <link rel="stylesheet" href="{% static 'css/hieu.css' %}" />
 </head>
 <body>
-    
+  {% if messages %} {% for message in messages %}
+  <div class="col-md-3 grid-margin stretch-card message_Container">
+      <div class="card bg-{{message.tags}}">
+          <div class="card-body">
+              <h4 class="card-title">Thông báo</h4>
+          <div class="media">
+          <i
+              class="mdi mdi-{{message.tags}}-circle-outline icon-md text-info d-flex align-self-center me-3"
+          ></i>
+          <div div class="media-body">
+              <p class="card-text">{{message}}</p>
+          </div>
+          </div>
+          </div>
+      </div>
+  </div>
+  {% endfor %} {% endif %}
   <div class="container-scroller"> 
     <!-- Thẻ Header -->
     {% include 'header.html' %}
-    {% if messages %} {% for message in messages %}
-    <div class="container-fluid text-center">
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-sm-offset-3 noti-right">
-          <div class="new-message-box">
-            <div class="new-message-box-{{message.tags}}">
-              <div class="info-tab tip-icon-{{message.tags}}" title="error">
-                <i></i>
-              </div>
-              <div class="tip-box-{{message.tags}}">
-                <!--<p><strong>Tip:</strong> If you want to enable the fading transition effect while closing the alert boxes, apply the classes <code>.fade</code> and <code>.in</code> to them along with the contextual class.</p>-->
-                <p>{{message}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %} 
-    {% endif %} 
     <div class="container-fluid page-body-wrapper">
       <!-- Block Theme Setting -->
       {% include 'theme_setting.html' %}
@@ -66,16 +63,17 @@
     </div>
   </div>
   <script>
-    setTimeout(function () {
-      var element = document.querySelector(".new-message-box");
-      element.classList.add("active");
-    }, 100); // Chờ 0.1 giây trước khi thêm lớp 'active'
+   setTimeout(function () {
+        var element = document.querySelector(".message_Container");
+        element.classList.add("active");
+      }, 0); // Chờ 0.1 giây trước khi thêm lớp 'active'
 
-    // Sử dụng JavaScript để ẩn thông báo sau 2 giây
-    setTimeout(function () {
-      var element = document.querySelector(".new-message-box");
-      element.classList.remove("active");
-    }, 2000);
+      // Sử dụng JavaScript để ẩn thông báo sau 2 giây
+      setTimeout(function () {
+        var element = document.querySelector(".message_Container");
+        element.classList.remove("active");
+      }, 2000);
+    </script>
   </script>
   <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
   <!-- endinject -->
