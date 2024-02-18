@@ -197,3 +197,9 @@ def changepassword(request):
 
 def upgrade(request):
     return render(request, 'upgrade.html')
+
+def upgrade_checkout(request):
+    return render(request, 'upgrade_checkout.html')
+
+def upgrade_success(request):
+    return render(request, 'upgrade_success.html')
