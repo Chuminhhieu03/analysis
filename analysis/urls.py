@@ -22,5 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('', include('app.urls')),
     path('user/', include('authuser.urls')),
+    path('income/', include('income.urls')),
+    path('expenses/', include('expenses.urls')),
     path('admin/', admin.site.urls),
 ]

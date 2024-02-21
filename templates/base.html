@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
   <!-- Required meta tags -->
@@ -23,9 +23,29 @@
   <link rel="stylesheet" href="{% static '/css/vertical-layout-light/style.css' %}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{% static '/images/favicon.png' %} "/>
+
+  <!-- My Css  -->
+  <link rel="stylesheet" href="{% static '/css/tuyen.css' %} ">
+  <link rel="stylesheet" href="{% static 'css/hieu.css' %}" />
 </head>
 <body>
-    
+  {% if messages %} {% for message in messages %}
+  <div class="col-md-3 grid-margin stretch-card message_Container">
+      <div class="card bg-{{message.tags}}">
+          <div class="card-body">
+              <h4 class="card-title">Thông báo</h4>
+          <div class="media">
+          <i
+              class="mdi mdi-{{message.tags}}-circle-outline icon-md text-info d-flex align-self-center me-3"
+          ></i>
+          <div div class="media-body">
+              <p class="card-text">{{message}}</p>
+          </div>
+          </div>
+          </div>
+      </div>
+  </div>
+  {% endfor %} {% endif %}
   <div class="container-scroller"> 
     <!-- Thẻ Header -->
     {% include 'header.html' %}
@@ -37,11 +57,25 @@
       <div class="main-panel">
         <!-- Block content -->
         {% block content %} {% endblock content %}
-        <!-- Block Footer -->
-        {% include 'footer.html' %} 
+        {% comment %} <!-- Block Footer -->
+        {% include 'footer.html' %}  
+        {% endcomment %}
       </div>
     </div>
   </div>
+  <script>
+   setTimeout(function () {
+        var element = document.querySelector(".message_Container");
+        element.classList.add("active");
+      }, 0); // Chờ 0.1 giây trước khi thêm lớp 'active'
+
+      // Sử dụng JavaScript để ẩn thông báo sau 2 giây
+      setTimeout(function () {
+        var element = document.querySelector(".message_Container");
+        element.classList.remove("active");
+      }, 2000);
+    </script>
+  </script>
   <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
