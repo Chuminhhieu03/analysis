@@ -7,3 +7,5 @@ def income(request):
     return render(request, 'income_table.html')
 def expense(request):
     return render(request, 'expense_table.html')
+def add_info(request):
+    return render(request, 'add_info.html')

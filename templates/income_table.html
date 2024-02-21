@@ -1,54 +1,74 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Income_Table{% endblock title %}
+{% block title %}Income_table{% endblock title %}
 {% block content %}
 <div class="card">
-    <div class="card-body">
-      <h4 class="card-title">Income Table</h4>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>ID</th>
-              <th>Created</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Jacob</td>
-              <td>53275531</td>
-              <td>12 May 2017</td>
-              <td><label class="badge badge-danger">Pending</label></td>
-            </tr>
-            <tr>
-              <td>Messsy</td>
-              <td>53275532</td>
-              <td>15 May 2017</td>
-              <td><label class="badge badge-warning">In progress</label></td>
-            </tr>
-            <tr>
-              <td>John</td>
-              <td>53275533</td>
-              <td>14 May 2017</td>
-              <td><label class="badge badge-info">Fixed</label></td>
-            </tr>
-            <tr>
-              <td>Peter</td>
-              <td>53275534</td>
-              <td>16 May 2017</td>
-              <td><label class="badge badge-success">Completed</label></td>
-            </tr>
-            <tr>
-              <td>Dave</td>
-              <td>53275535</td>
-              <td>20 May 2017</td>
-              <td><label class="badge badge-warning">In progress</label></td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="card-body">
+    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+      <h4 class="card-title">Income table</h4>
+      <div class="btn-wrapper d-flex align-items-center">
+        <a href="#" class="btn btn-outline-dark align-items-center me-2">
+          <i class="mdi mdi-plus" style="vertical-align: middle;"></i>
+          <span style="vertical-align: middle;">Thêm</span> 
+        </a>
       </div>
+    </div>  
+    <div class="table-responsive mt-4">
+      <div class="col-md-4 d-flex justify-content-end">
+        <div class="form-group">
+          <input type="text" class="form-control" id="searchField" placeholder="Search">
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Số tiền</th>
+            <th>Ngày tạo</th>
+            <th>Hình thức</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jacob</td>
+            <td>53275531</td>
+            <td>12 May 2017</td>
+            <td>
+              <button type="submit" class="btn btn-outline-dark align-items-center me-2">
+                <i class="mdi mdi-delete" style="vertical-align: middle;"></i>
+              </button>
+              <button type="submit" class="btn btn-outline-dark align-items-center me-2">
+                <i class="mdi mdi-wrench" style="vertical-align: middle;"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Messsy</td>
+            <td>53275532</td>
+            <td>15 May 2017</td>
+            <td><label class="badge badge-warning">In progress</label></td>
+          </tr>
+          <tr>
+            <td>John</td>
+            <td>53275533</td>
+            <td>14 May 2017</td>
+            <td><label class="badge badge-info">Fixed</label></td>
+          </tr>
+          <tr>
+            <td>Peter</td>
+            <td>53275534</td>
+            <td>16 May 2017</td>
+            <td><label class="badge badge-success">Completed</label></td>
+          </tr>
+          <tr>
+            <td>Dave</td>
+            <td>53275535</td>
+            <td>20 May 2017</td>
+            <td><label class="badge badge-warning">In progress</label></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-{% endblock %}
+</div>
+{% endblock content %}

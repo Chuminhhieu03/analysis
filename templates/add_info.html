@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}add_info{% endblock title %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Trang thêm thông tin</h4>
+    <form class="forms-sample">
+      <div class="form-group">
+        <label for="exampleInputUsername1">Số tiền</label>
+        <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nhập tiền">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Mô tả</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Mô tả">
+      </div>
+      <div class="form-group">
+        <label for="exampleSelectGender">Loại gì đó</label>
+          <select class="form-control" id="exampleSelectGender">
+            <option>Tiền ăn</option>
+            <option>Tiền tiết kiệm</option>
+          </select>
+        </div>
+      <button type="submit" class="btn btn-primary me-2">Submit</button>
+      <button class="btn btn-light">Cancel</button>
+    </form>
+  </div>
+</div>
+  {% endblock content %}
