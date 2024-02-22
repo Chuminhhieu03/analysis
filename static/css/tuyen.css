@@ -7,3 +7,7 @@
   color: black;
   background: white;
 }
+
+.income-chart-page .datepicker span span {
+  border: none;
+}
