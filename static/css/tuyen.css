@@ -2,3 +2,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.income-chart-page .datepicker span, .income-chart-page .datepicker input{
+  color: black;
+  background: white;
+}
