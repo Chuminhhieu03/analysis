@@ -5,9 +5,13 @@ from django.views.generic import View
 from income.models import Income
 from expenses.models import Expenses
 from django.db.models import Sum
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'GET':
         datenow = datetime.now()
         # get month of now 
@@ -44,8 +48,6 @@ def index(request):
         })
 class GetData(View):
     def get(self, request, *args, **kwargs):
-        
-
         data_this_month = [100, 200, 300]
         data_last_month = [150, 250, 350]
         data_this_year = [1000, 2000, 3000]

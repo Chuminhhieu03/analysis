@@ -17,6 +17,8 @@ from datetime import datetime
 
 
 def handleLogin(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == "GET":
         return render(request, 'login.html')
     if request.method == "POST":
@@ -38,6 +40,9 @@ def handleLogin(request):
 
 
 def logout(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     logout(request)
     messages.info(request, "Đăng xuất thành công")
     return redirect('/auth/login')
@@ -189,10 +194,16 @@ class SetNewPasswordView(View):
 
 
 def index(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     return render(request, 'profile.html')
 
 
 def edit_profile(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == "GET":
         return render(request, 'editprofile.html')
     if request.method == "POST":
@@ -215,10 +226,16 @@ def edit_profile(request):
 
 
 def feedback_user(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     return render(request, "feedback.html")
 
 
 def changepassword(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == "GET":
         return render(request, 'changepassword.html')
     if request.method == "POST":
@@ -260,6 +277,9 @@ def changepassword(request):
 
 
 def upgrade(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == "GET":
         return render(request, 'upgrade.html')
     if request.method == "POST":
@@ -267,6 +287,9 @@ def upgrade(request):
 
 
 def upgrade_checkout(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == "GET":
         return render(request, 'upgrade_checkout.html')
     if request.method == "POST":
@@ -279,7 +302,8 @@ def upgrade_checkout(request):
         messages.success(request, "Yêu cầu nâng cấp tài khoản đã được gửi")
         return redirect('upgrade_success')
         
-
-
 def upgrade_success(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     return render(request, 'upgrade_success.html')

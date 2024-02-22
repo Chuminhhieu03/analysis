@@ -20,6 +20,9 @@ pdfmetrics.registerFont(TTFont('DejaVu', font_path))
 
 
 def index(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'GET':
         query = request.GET.get('q', '')
         user = request.user
@@ -34,10 +37,16 @@ def index(request):
 
 
 def chart(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     return render(request, 'expenses_chart.html')
 
 
 def get_chart_data(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'POST':
         user = request.user
         data = json.loads(request.body)
@@ -68,6 +77,9 @@ def get_chart_data(request):
 
 
 def create_pdf(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     user = request.user
     buffer = io.BytesIO()
     # Create the PDF object, using the buffer as its "file."
@@ -119,6 +131,9 @@ def create_pdf(request):
 
 
 def import_excel(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'POST':
         file = request.FILES['file']
         if not file.name.endswith('.xlsx') and not file.name.endswith('.xls'):
@@ -141,6 +156,9 @@ def import_excel(request):
 
 
 def add(request):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'GET':
         return render(request, 'add_expenses.html')
     if request.method == 'POST':
@@ -157,6 +175,9 @@ def add(request):
 
 
 def edit(request, id):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'GET':
         expenses = Expenses.objects.get(id=id)
         expenses.date = expenses.date.strftime('%d/%m/%Y')
@@ -175,6 +196,9 @@ def edit(request, id):
 
 
 def delete(request, id):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
     if request.method == 'POST':
         try:
             expenses = Expenses.objects.get(id=id)
