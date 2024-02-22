@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% load humanize %}
 {% load static %} 
-{% block title%}Bảng Thu nhập{%endblock title %} 
+{% block title%}Bảng Chi tiêu{%endblock title %} 
 {% block content %}
 
 <div class="content-wrapper">
@@ -9,13 +9,13 @@
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Bảng Thu nhập</h4>
+          <h4 class="card-title">Bảng Chi tiêu</h4>
           <div class="row">
             <div
               class="btn-wrapper col-md-12 d-flex justify-content-end align-center"
               style="align-items: baseline"
             >
-              <form method="GET" action="{% url 'income' %}" class="col-md-4 btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
+              <form method="GET" action="{% url 'expenses' %}" class="col-md-4 btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
                 <input
                   type="text"
                   name="q"
@@ -28,17 +28,17 @@
                   <i class="mdi mdi-magnify"></i>
                 </button>
               </form>
-              <button id="income_import_btn" class="btn btn-otline-dark align-items-center">
+              <button id="expenses_import_btn" class="btn btn-otline-dark align-items-center">
                 <i class="icon-upload"></i> Import
               </button>
-              <form action="/income/import_excel" method="POST" id="income_import_form" enctype="multipart/form-data">
+              <form action="/expenses/import_excel" method="POST" id="expenses_import_form" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input name="file" type="file" id="fileInput" accept=".xls,.xlsx" style="display: none;">
               </form>
-              <a href="/income/create_pdf" class="btn btn-otline-dark">
+              <a href="/expenses/create_pdf" class="btn btn-otline-dark">
                 <i class="icon-download"></i> Export
               </a>
-              <a href="/income/add" class="btn btn-primary text-white me-0">
+              <a href="/expenses/add" class="btn btn-primary text-white me-0">
                 <i class="mdi mdi-plus-circle-outline"></i> Thêm
               </a>
             </div>
@@ -55,25 +55,25 @@
                 </tr>
               </thead>
               <tbody>
-                {% for income in page_obj %}
+                {% for expenses in page_obj %}
                 <tr>
-                  <td>{{ income.amount|floatformat:"0"|intcomma }} VNĐ</td>
+                  <td>{{ expenses.amount|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>
-                    {% if income.source == "0" %} 
-                        Lương 
-                    {% elif income.source == "1" %} 
-                        Kinh Doanh 
-                    {% elif income.source == "2" %} 
-                        Phụ thu nhập 
+                    {% if expenses.source == "0" %} 
+                        Ăn uống
+                    {% elif expenses.source == "1" %} 
+                        Quần áo 
+                    {% elif expenses.source == "2" %} 
+                        Du lịch và giải trí
                     {% else %} 
                         Khác 
                     {% endif %}
                   </td>
-                  <td>{{ income.date|date:"d/m/Y" }}</td>
-                  <td>{{income.description}}</td>
+                  <td>{{ expenses.date|date:"d/m/Y" }}</td>
+                  <td>{{expenses.description}}</td>
                   <td>
                     <a
-                      href="/income/edit/{{income.id}}"
+                      href="/expenses/edit/{{expenses.id}}"
                       class="btn btn-outline-dark align-items-center me-2"
                     >
                       <i
@@ -83,7 +83,7 @@
                     </a>
                       <button
                         type="button"
-                        class="delete_income_btn btn btn-outline-dark align-items-center me-2"
+                        class="delete_expenses_btn btn btn-outline-dark align-items-center me-2"
                       >
                         <i
                           class="mdi mdi-delete"
@@ -92,7 +92,7 @@
                       </button>
                   </td>
                 </tr>
-                <form class="form_delete_income" method="POST" action="/income/delete/{{income.id}}">
+                <form class="form_delete_expenses" method="POST" action="/expenses/delete/{{expenses.id}}">
                   {% csrf_token %}
                 </form>
                 {% endfor %}
@@ -122,21 +122,21 @@
   </div>
 </div>
 <script>
-  // delete income
+  // delete expenses
   document.addEventListener("DOMContentLoaded", function () {
-    var delete_income_btn = document.getElementsByClassName("delete_income_btn");
-    var form_delete_income = document.getElementsByClassName("form_delete_income");
-    console.log(form_delete_income.length);
-    for (let i = 0; i < delete_income_btn.length; i++) {
-      delete_income_btn[i].addEventListener("click", function () {
+    var delete_expenses_btn = document.getElementsByClassName("delete_expenses_btn");
+    var form_delete_expenses = document.getElementsByClassName("form_delete_expenses");
+    console.log(form_delete_expenses.length);
+    for (let i = 0; i < delete_expenses_btn.length; i++) {
+      delete_expenses_btn[i].addEventListener("click", function () {
         var result = confirm("Bạn có chắc chắn muốn xóa thu nhập này không?");
         if (result) {
-          form_delete_income[i].submit();
+          form_delete_expenses[i].submit();
         }
       });
     }
   });
 </script>
-<script src="{% static 'js/hieujs/income_import.js' %}"></script>
+<script src="{% static 'js/hieujs/expenses_import.js' %}"></script>
 {% endblock content %}
 

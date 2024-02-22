@@ -10,8 +10,8 @@ urlpatterns = [
     path('resetPassword/', views.resetPassword, name='resetPassword'),
     path('activate/<uidb64>/<token>',views.ActivateAccountView.as_view(),name='activate'),
     path('reset/<uidb64>/<token>',views.SetNewPasswordView.as_view(),name='reset'),
-    path('changepassword/', views.changepassword, name='changepassword'),
+    path('change_password/', views.changepassword, name='changepassword'),
     path('upgrade/', views.upgrade, name='upgrade'),
-    path('upgrade/checkout/', views.upgrade_checkout, name='upgrade_checkout'),
-    path('upgrade/success/', views.upgrade_success, name='upgrade_success'),
+    path('checkout/', views.upgrade_checkout, name='upgrade_checkout'),
+    path('success/', views.upgrade_success, name='upgrade_success'),
 ]

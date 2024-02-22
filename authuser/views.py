@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import UserProfile
+from .models import UserUpgrade
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
@@ -11,6 +12,7 @@ from .utils import generate_token
 from django.views.generic import View
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth import authenticate, login
+from datetime import datetime
 # Create your views here.
 
 
@@ -34,10 +36,12 @@ def handleLogin(request):
         login(request, user)
         return redirect('/')
 
+
 def logout(request):
     logout(request)
-    messages.info(request,"Đăng xuất thành công")
+    messages.info(request, "Đăng xuất thành công")
     return redirect('/auth/login')
+
 
 def signup(request):
     if request.method == "GET":
@@ -182,24 +186,100 @@ class SetNewPasswordView(View):
         except DjangoUnicodeDecodeError as identifier:
             messages.error(request, "Một lỗi đã xảy ra, vui lòng thử lại")
             return render(request, 'set-new-password.html', context)
-        
+
+
 def index(request):
     return render(request, 'profile.html')
 
+
 def edit_profile(request):
-    return render(request, "editprofile.html")
+    if request.method == "GET":
+        return render(request, 'editprofile.html')
+    if request.method == "POST":
+        user = request.user
+        avatar = request.FILES.get('avatar', "")
+        fullname = request.POST['full_name']
+        address = request.POST['address']
+        phone = request.POST['phone']
+        dob = request.POST['birth']
+        if avatar:
+            user.userprofile.avatar = avatar
+        user.first_name = fullname
+        user.userprofile.address = address
+        user.userprofile.phone = phone
+        user.date_joined = datetime.strptime(dob, '%d/%m/%Y')
+        user.userprofile.save()
+        user.save()
+        messages.success(request, "Cập nhật thông tin thành công")
+        return render(request, 'editprofile.html')
+
 
 def feedback_user(request):
     return render(request, "feedback.html")
 
+
 def changepassword(request):
-    return render(request, 'changepassword.html')
+    if request.method == "GET":
+        return render(request, 'changepassword.html')
+    if request.method == "POST":
+        old_password = request.POST['oldPassword']
+        new_password = request.POST['newPassword']
+        confirm_password = request.POST['confirmNewPassword']
+        user = request.user
+        if not user.check_password(old_password):
+            messages.warning(request, "Mật khẩu cũ không chính xác")
+            return render(request, 'changepassword.html')
+        if new_password != confirm_password:
+            messages.warning(request, "Mật khẩu mới không khớp")
+            return render(request, 'changepassword.html')
+        # check valid password with condition that password must have at least 1 uppercase, 1 lowercase, 1 number and 1 special character
+        if not any(char.isupper() for char in new_password):
+            messages.warning(
+                request, "Mật khẩu phải có ít nhất 1 ký tự viết hoa")
+            return render(request, 'changepassword.html')
+        if not any(char.islower() for char in new_password):
+            messages.warning(
+                request, "Mật khẩu phải có ít nhất 1 ký tự viết thường")
+            return render(request, 'changepassword.html')
+        if not any(char.isdigit() for char in new_password):
+            messages.warning(request, "Mật khẩu phải có ít nhất 1 chữ số")
+            return render(request, 'changepassword.html')
+        if not any(not char.isalnum() for char in new_password):
+            messages.warning(
+                request, "Mật khẩu phải có ít nhất 1 ký tự đặc biệt")
+            return render(request, 'changepassword.html')
+        if len(new_password) < 8:
+            messages.warning(
+                request, "Mật khẩu phải có ít nhất 8 ký tự")
+            return render(request, 'changepassword.html')
+        user.set_password(new_password)
+        user.save()
+        messages.success(
+            request, "Mật khẩu của bạn đã được thay đổi thành công")
+        return redirect('/user/login')
+
 
 def upgrade(request):
-    return render(request, 'upgrade.html')
+    if request.method == "GET":
+        return render(request, 'upgrade.html')
+    if request.method == "POST":
+        return render(request, 'upgrade_checkout.html')
+
 
 def upgrade_checkout(request):
-    return render(request, 'upgrade_checkout.html')
+    if request.method == "GET":
+        return render(request, 'upgrade_checkout.html')
+    if request.method == "POST":
+        user = request.user
+        if user is None:
+            messages.warning(request, "Tài khoản không tồn tại")
+            return redirect('upgrade')
+        user.userupgrade.state = '2'
+        user.userupgrade.save()
+        messages.success(request, "Yêu cầu nâng cấp tài khoản đã được gửi")
+        return redirect('upgrade_success')
+        
+
 
 def upgrade_success(request):
     return render(request, 'upgrade_success.html')

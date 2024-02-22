@@ -1,9 +1,14 @@
-{% extends 'base.html' %} 
-{% load static %} {% block title%}EditProFile{%endblock title %} 
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title%}Cập nhật Hồ
+sơ{%endblock title %} {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/nam.css' %}" />
+<link
+  rel="stylesheet"
+  href="{% static 'vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}"
+/>
+<script src="{% static 'vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
 <div class="content-wrapper">
-  <div class="row">
+  <form class="row" action="/user/" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="container-xl px-4 mt-4">
       <hr class="mt-0 mb-4" />
       <div class="row">
@@ -15,17 +20,21 @@
               <!-- Profile picture image-->
               <img
                 class="img-account-profile rounded-circle mb-2"
-                src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                src="{{request.user.userprofile.avatar.url}}"
                 alt=""
               />
               <!-- Profile picture help block-->
               <div class="small font-italic text-muted mb-4">
-                JPG or PNG no larger than 5 MB
+                JPG hoặc PNG không quá 5MB
               </div>
               <!-- Profile picture upload button-->
               <div class="form-group">
                 <label class="btn btn-primary">
-                  Tải ảnh lên<input type="file" style="display: none;">
+                  Tải ảnh lên<input
+                    name="avatar"
+                    type="file"
+                    style="display: none"
+                  />
                 </label>
               </div>
             </div>
@@ -37,7 +46,6 @@
             <div class="card-header">Thông tin tài khoản</div>
             <div class="card-body">
               <form>
-                <!-- Form Group (username)-->
                 <div class="mb-3">
                   <label class="small mb-1" for="inputUsername"
                     >Tên Đăng Nhập</label
@@ -47,11 +55,25 @@
                     id="inputUsername"
                     type="text"
                     placeholder="Nhập vào tên đăng nhập"
+                    value="{{ user.username }}"
+                    disabled
                   />
                 </div>
                 <!-- Form Row-->
+                <div class="mb-3">
+                  <label class="small mb-1" for="inputEmailAddress"
+                    >Email</label
+                  >
+                  <input
+                    class="form-control"
+                    id="inputEmailAddress"
+                    type="email"
+                    placeholder="Nhập vào địa chỉ email"
+                    value="{{ user.email }}"
+                    disabled
+                  />
+                </div>
                 <div class="row gx-3 mb-3">
-                  
                   <!-- Form Group (last name)-->
                   <div class="mb-3">
                     <label class="small mb-1" for="inputLastName"
@@ -62,25 +84,14 @@
                       id="inputLastName"
                       type="text"
                       placeholder="Nhập vào họ và tên"
+                      value="{{ user.first_name }}"
+                      name="full_name"
                     />
                   </div>
                 </div>
                 <!-- Form Row        -->
                 <div class="row gx-3 mb-3">
-                  <!-- Form Group (organization name)-->
-                  <div class="col-md-6">
-                    <label class="small mb-1" for="inputOrgName"
-                      >Tên Công Ty</label
-                    >
-                    <input
-                      class="form-control"
-                      id="inputOrgName"
-                      type="text"
-                      placeholder="Nhập vào tên công ty của bạn"
-                    />
-                  </div>
-                  <!-- Form Group (location)-->
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <label class="small mb-1" for="inputLocation"
                       >Địa Chỉ</label
                     >
@@ -89,21 +100,12 @@
                       id="inputLocation"
                       type="text"
                       placeholder="Nhập vào địa chỉ của bạn"
+                      value="{{ user.userprofile.address }}"
+                      name="address"
                     />
                   </div>
                 </div>
                 <!-- Form Group (email address)-->
-                <div class="mb-3">
-                  <label class="small mb-1" for="inputEmailAddress"
-                    >Email</label
-                  >
-                  <input
-                    class="form-control"
-                    id="inputEmailAddress"
-                    type="email"
-                    placeholder="Nhập vào địa chỉ email"
-                  />
-                </div>
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
                   <!-- Form Group (phone number)-->
@@ -116,6 +118,8 @@
                       id="inputPhone"
                       type="tel"
                       placeholder="Nhập vào số điện thoại "
+                      value="{{ user.userprofile.phone }}"
+                      name="phone"
                     />
                   </div>
                   <!-- Form Group (birthday)-->
@@ -123,21 +127,33 @@
                     <label class="small mb-1" for="inputBirthday"
                       >Ngày Sinh</label
                     >
-                    
-                    <div class="col-md-6">
+
+                    <div class="col-md-12">
                       <li class="nav-item d-none d-lg-block">
-                        <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-                          <span class="input-group-addon input-group-prepend border-right">
-                            <span class="icon-calendar input-group-text calendar-icon"></span>
+                        <div
+                          id="datepicker-editProfile"
+                          class="input-group date datepicker navbar-date-picker"
+                        >
+                          <span
+                            class="input-group-addon input-group-prepend border-right"
+                          >
+                            <span
+                              class="icon-calendar input-group-text calendar-icon"
+                            ></span>
                           </span>
-                          <input type="text" class="form-control">
+                          <input
+                            class="form-control"
+                            type="text"
+                            value="{{ user.date_joined|date:'d/m/Y' }}"
+                            name="birth"
+                          />
                         </div>
                       </li>
                     </div>
                   </div>
                 </div>
                 <!-- Save changes button-->
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="submit">
                   Lưu thay đổi
                 </button>
               </form>
@@ -146,6 +162,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var datepicker = document.querySelector("#datepicker-editProfile");
+    $(datepicker).datepicker({
+      format: "dd/mm/yyyy",
+      todayHighlight: true,
+      autoclose: true,
+    });
+  });
+</script>
 {% endblock content %}

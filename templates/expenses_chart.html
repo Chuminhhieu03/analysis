@@ -13,16 +13,16 @@
                     <div class="card-body">
                         <h4 class="card-title">Chọn tháng để xem</h4>
                         <div class="row">
-                          <form action="/income/get_chart_data" method="post" id="income_chart_form">
+                          <form action="/expenses/get_chart_data" method="post" id="expenses_chart_form">
                             {% csrf_token %}
-                            <div id="datepicker-income" class="col-lg-8 nput-group date datepicker">
+                            <div id="datepicker-expenses" class="col-lg-8 nput-group date datepicker">
                                 <span class="input-group-addon input-group-prepend border-right">
                                   <span class="icon-calendar input-group-text calendar-icon"></span>
                                 </span>
                                 <input name="date" type="text" class="form-control" readonly>
                             </div>
                             <div class="col-lg-3">
-                                <button class="btn btn-primary mt-3" type="button" id="income_chart_button">Xem</button>
+                                <button class="btn btn-primary mt-3" type="button" id="expenses_chart_button">Xem</button>
                             </div>
                           </form>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="card-body text-center"> <!-- Added 'text-center' class -->
                         <h4 class="card-title">Biểu đồ</h4>
                         <div class="mx-auto"> <!-- Added 'mx-auto' class -->
-                            <canvas id="incomeChart"></canvas>
+                            <canvas id="expensesChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                               #icon
                             </td>
                             <td>
-                              Lương
+                              Ăn uống
                             </td>
                             <td>
                               <div class="progress">
@@ -84,7 +84,7 @@
                               #icon
                             </td>
                             <td>
-                              Kinh Doanh
+                              Quần áo
                             </td>
                             <td>
                               <div class="progress">
@@ -100,7 +100,7 @@
                               #icon
                             </td>
                             <td>
-                              Phụ kinh doanh
+                              Du lịch và giải trí
                             </td>
                             <td>
                               <div class="progress">
@@ -135,6 +135,6 @@
               </div>
         </div>
 </div>  
-<script src="{% static 'js/hieujs/income_chart.js' %}"></script>
+<script src="{% static 'js/hieujs/expenses_chart.js' %}"></script>
 
 {% endblock content %}

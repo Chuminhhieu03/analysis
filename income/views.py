@@ -11,13 +11,25 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 import io
 import pandas as pd
 from decimal import Decimal
+from django.core.paginator import Paginator
+from datetime import datetime
+from django.db.models import Q
 
 font_path = ('static/fonts/DejaVuSans/DejaVuSans.ttf')
 pdfmetrics.registerFont(TTFont('DejaVu', font_path))
 
 
 def index(request):
-    return render(request, 'income_table.htmL')
+    if request.method == 'GET':
+        query = request.GET.get('q','')
+        user = request.user
+        incomes = Income.objects.filter(
+            Q(user=user) & (Q(description__icontains=query) | Q(amount__icontains=query) | Q(date__icontains=query) | Q(source__icontains=query))
+        ).order_by('-date')
+        paginator = Paginator(incomes, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'income_table.htmL', {'page_obj': page_obj})
 
 
 def chart(request):
@@ -61,6 +73,9 @@ def create_pdf(request):
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
     incomes = Income.objects.filter(user=user)
+    # convert amount to int and have a comma every 3 numbers
+    for income in incomes:
+        income.amount = '{:,}'.format(int(income.amount))
     SourceLable = ['Lương', 'Kinh doanh', 'Phụ thu nhập', 'Khác']
     p.setFont('DejaVu', 12)
     #i want to create a table for the incomes
@@ -85,7 +100,7 @@ def create_pdf(request):
         p.drawString(100, y, str(income.date))
         p.drawString(200, y, SourceLable[int(income.source)])
         p.drawString(300, y, income.description)
-        p.drawString(400, y, str(income.amount))
+        p.drawString(400, y, str(income.amount) + " VNĐ")
         y -= 20 
 
     # Close the PDF object cleanly, and end writing process.
@@ -95,6 +110,7 @@ def create_pdf(request):
     # Get the value of the BytesIO buffer and write it to the response.
     pdf = buffer.getvalue()
     buffer.close()
+    messages.success(request, 'Tạo báo cáo thu nhập thành công')
     return FileResponse(io.BytesIO(pdf), as_attachment=True, filename='incomes.pdf')
 
 def import_excel(request):
@@ -104,12 +120,55 @@ def import_excel(request):
             messages.warning(request, 'Sai định dạng file, chỉ chấp nhận file excel có đuôi .xlsx hoặc .xls')
             return redirect('income')
         df = pd.read_excel(file)
-        for i in range(len(df)):
-            income = Income(user=request.user, amount=Decimal(float(df['amount'][i])), date=df['date'][i], source=df['source'][i], description=df['description'][i])
-            income.save()
-        # except:
-        #     messages.warning(request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu')
-        #     return redirect('income')
+        try:
+            for i in range(len(df)):
+                income = Income(user=request.user, amount=Decimal(float(df['amount'][i])), date=df['date'][i], source=df['source'][i], description=df['description'][i])
+                income.save()
+        except:
+            messages.warning(request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu')
+            return redirect('income')
         messages.success(request, 'Import thành công')
         return redirect('income')
     return redirect('income')
+
+def add(request):
+    if request.method == 'GET':
+        return render(request, 'add_income.html')
+    if request.method == 'POST':
+        user = request.user
+        amount = request.POST['amount']
+        date = request.POST['date']
+        source = request.POST['source']
+        description = request.POST['description']
+        income = Income(user=user, amount=amount, date=datetime.strptime(date, '%d/%m/%Y'), source=source, description=description)
+        income.save()
+        messages.success(request, 'Thêm thu nhập thành công')
+        return redirect('income')
+
+def edit(request, id):
+    if request.method == 'GET':
+        income = Income.objects.get(id=id)
+        income.date = income.date.strftime('%d/%m/%Y')
+        income.amount = int(income.amount)
+        return render(request, 'edit_income.html', {'income': income})
+    if request.method == 'POST':
+        income = Income.objects.get(id=id)
+        income.amount = request.POST['amount']
+        date = request.POST['date']
+        income.date = datetime.strptime(date, '%d/%m/%Y')
+        income.source = request.POST['source']
+        income.description = request.POST['description']
+        income.save()
+        messages.success(request, 'Chỉnh sửa thu nhập thành công')
+        return redirect('income')
+
+def delete(request,id):
+    if request.method == 'POST':
+        try:
+            income = Income.objects.get(id=id)
+            income.delete()
+        except:
+            messages.warning(request, 'Khoản thu nhập không tồn tại')
+            return redirect('income')   
+        messages.success(request, 'Xóa thu nhập thành công')
+        return redirect('income')
