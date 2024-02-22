@@ -21,10 +21,11 @@ pdfmetrics.registerFont(TTFont('DejaVu', font_path))
 
 def index(request):
     if request.method == 'GET':
-        query = request.GET.get('q','')
+        query = request.GET.get('q', '')
         user = request.user
         incomes = Income.objects.filter(
-            Q(user=user) & (Q(description__icontains=query) | Q(amount__icontains=query) | Q(date__icontains=query) | Q(source__icontains=query))
+            Q(user=user) & (Q(description__icontains=query) | Q(amount__icontains=query) | Q(
+                date__icontains=query) | Q(source__icontains=query))
         ).order_by('-date')
         paginator = Paginator(incomes, 10)
         page_number = request.GET.get('page')
@@ -59,10 +60,12 @@ def get_chart_data(request):
             elif i.source == '3':
                 income_data[3] += i.amount
         # Return the income data as a JSON response
-        if sum(income_data) == 0:
-            messages.success(request, "Chưa có dữ liệu thu nhập cho tháng này")
-            return render(request, 'income_chart.html')
+        if sum(income_data) == 0 or len(income) == 0:
+            messages.warning(request, "Chưa có dữ liệu thu nhập cho tháng này")
+            # return fail message
+            return JsonResponse({'error': 'Chưa có dữ liệu thu nhập cho tháng này'}, status=400)
         return JsonResponse(income_data, safe=False)
+
 
 def create_pdf(request):
     user = request.user
@@ -78,7 +81,7 @@ def create_pdf(request):
         income.amount = '{:,}'.format(int(income.amount))
     SourceLable = ['Lương', 'Kinh doanh', 'Phụ thu nhập', 'Khác']
     p.setFont('DejaVu', 12)
-    #i want to create a table for the incomes
+    # i want to create a table for the incomes
     p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
     p.drawString(100, 730, "--------------------------------------------")
     p.drawString(100, 710, "Ngày")
@@ -91,7 +94,8 @@ def create_pdf(request):
             p.showPage()
             p.setFont('DejaVu', 12)
             p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
-            p.drawString(100, 730, "--------------------------------------------")
+            p.drawString(
+                100, 730, "--------------------------------------------")
             p.drawString(100, 710, "Ngày")
             p.drawString(200, 710, "Loại")
             p.drawString(300, 710, "Chú thích")
@@ -101,7 +105,7 @@ def create_pdf(request):
         p.drawString(200, y, SourceLable[int(income.source)])
         p.drawString(300, y, income.description)
         p.drawString(400, y, str(income.amount) + " VNĐ")
-        y -= 20 
+        y -= 20
 
     # Close the PDF object cleanly, and end writing process.
     p.save()
@@ -113,23 +117,28 @@ def create_pdf(request):
     messages.success(request, 'Tạo báo cáo thu nhập thành công')
     return FileResponse(io.BytesIO(pdf), as_attachment=True, filename='incomes.pdf')
 
+
 def import_excel(request):
     if request.method == 'POST':
         file = request.FILES['file']
         if not file.name.endswith('.xlsx') and not file.name.endswith('.xls'):
-            messages.warning(request, 'Sai định dạng file, chỉ chấp nhận file excel có đuôi .xlsx hoặc .xls')
+            messages.warning(
+                request, 'Sai định dạng file, chỉ chấp nhận file excel có đuôi .xlsx hoặc .xls')
             return redirect('income')
         df = pd.read_excel(file)
         try:
             for i in range(len(df)):
-                income = Income(user=request.user, amount=Decimal(float(df['amount'][i])), date=df['date'][i], source=df['source'][i], description=df['description'][i])
+                income = Income(user=request.user, amount=Decimal(float(
+                    df['amount'][i])), date=df['date'][i], source=df['source'][i], description=df['description'][i])
                 income.save()
         except:
-            messages.warning(request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu')
+            messages.warning(
+                request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu')
             return redirect('income')
         messages.success(request, 'Import thành công')
         return redirect('income')
     return redirect('income')
+
 
 def add(request):
     if request.method == 'GET':
@@ -140,10 +149,12 @@ def add(request):
         date = request.POST['date']
         source = request.POST['source']
         description = request.POST['description']
-        income = Income(user=user, amount=amount, date=datetime.strptime(date, '%d/%m/%Y'), source=source, description=description)
+        income = Income(user=user, amount=amount, date=datetime.strptime(
+            date, '%d/%m/%Y'), source=source, description=description)
         income.save()
         messages.success(request, 'Thêm thu nhập thành công')
         return redirect('income')
+
 
 def edit(request, id):
     if request.method == 'GET':
@@ -162,13 +173,14 @@ def edit(request, id):
         messages.success(request, 'Chỉnh sửa thu nhập thành công')
         return redirect('income')
 
-def delete(request,id):
+
+def delete(request, id):
     if request.method == 'POST':
         try:
             income = Income.objects.get(id=id)
             income.delete()
         except:
             messages.warning(request, 'Khoản thu nhập không tồn tại')
-            return redirect('income')   
+            return redirect('income')
         messages.success(request, 'Xóa thu nhập thành công')
         return redirect('income')

@@ -85,6 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
         business_amount.innerHTML = `${dataSource[1].toLocaleString()} VND`;
         other_amount.innerHTML = `${dataSource[2].toLocaleString()} VND`;
         submoney_amount.innerHTML = `${dataSource[3].toLocaleString()} VND`;
+      })
+      .catch((error) => {
+        location.reload();
       });
   });
 });
