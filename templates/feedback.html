@@ -13,26 +13,32 @@
             Khách hàng có thể gửi các ý kiến 
             phản hồi tại đây.
           </p>
-          <form class="forms-sample">
+          <form class="forms-sample" method="POST" action="/user/feedback/">
+            {% csrf_token %}
             <div class="form-group">
-              <label for="exampleInputUsername1">Title</label>
+              <label for="exampleInputUsername1">Tiêu đề</label>
               <input
+                name="title"
                 type="text"
                 class="form-control form-control-lg"
                 id="exampleInputUsername1"
+                placeholder="Tiêu đề cho phản hồi"
+                required
               />
             </div>
             <div class="form-group">
-              <label for="exampleFormControlTextarea1">Content</label>
+              <label for="exampleFormControlTextarea1">Nội dung</label>
               <textarea
+                name="content"
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="5"
+                placeholder="Nội dung phản hồi"
+                required
                 style="height: 100px;"
               ></textarea>
             </div>
             <button type="submit" class="btn btn-primary me-2">Xác nhận</button>
-            <button class="btn btn-light">Hủy</button>
           </form>
         </div>
       </div>

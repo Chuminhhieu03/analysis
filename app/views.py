@@ -31,13 +31,14 @@ def index(request):
         percent_expense = (sum_expense-last_sum_expense)/last_sum_expense*100
         percent_profit = (sum_profit-last_sum_profit)/last_sum_profit*100
         # create a format each 3 number have one ','   
-        sum_income = "{:,}".format(sum_income)
-        sum_expense = "{:,}".format(sum_expense)
-        sum_profit = "{:,}".format(sum_profit)
-        # format percent to 2 number after '.'
-        percent_income = "{:.2f}".format(percent_income)
-        percent_expense = "{:.2f}".format(percent_expense)
-        percent_profit = "{:.2f}".format(percent_profit)
+        # sum_income = "{:,}".format(sum_income)
+        # sum_expense = "{:,}".format(sum_expense)
+        # sum_profit = "{:,}".format(sum_profit)
+        # # format percent to 2 number after '.'
+        # percent_income = "{:.2f}".format(percent_income)
+        # percent_expense = "{:.2f}".format(percent_expense)
+        # percent_profit = "{:.2f}".format(percent_profit)
+        
         return render(request, 'index.html', {
             'sumIncome': sum_income,
             'sumExpense': sum_expense,
@@ -48,20 +49,27 @@ def index(request):
         })
 class GetData(View):
     def get(self, request, *args, **kwargs):
-        data_this_month = [100, 200, 300]
-        data_last_month = [150, 250, 350]
-        data_this_year = [1000, 2000, 3000]
-        data_last_year = [1500, 2500, 3500]
-
+        # Get the username from the request parameters
+        username = request.GET.get('p')
+        datenow = datetime.now()
+        mothnow = datenow.month
+        yearnow = datenow.year
+        data_income_this_month = [0] * 31
+        data_expense_this_month = [0] * 31
+        data_income_this_year = [0] * 12
+        data_expense_this_year = [0] * 12
+        # get all data income for each month in a year
+        for i in range(1,13):
+            data_income_this_year[i-1] = Income.objects.filter(date__month=i).filter(date__year=yearnow).aggregate(Sum('amount'))['amount__sum']
+            data_expense_this_year[i-1] = Expenses.objects.filter(date__month=i).filter(date__year=yearnow).aggregate(Sum('amount'))['amount__sum']
+        # get all data income for each day in a month
+        for i in range(1,32):
+            data_income_this_month[i-1] = Income.objects.filter(date__day=i).filter(date__month=mothnow).filter(date__year=yearnow).aggregate(Sum('amount'))['amount__sum']
+            data_expense_this_month[i-1] = Expenses.objects.filter(date__day=i).filter(date__month=mothnow).filter(date__year=yearnow).aggregate(Sum('amount'))['amount__sum']
+        # Return the JSON response with the data
         return JsonResponse({
-            'sumIncome': sum_income,
-            'sumExpense': sum_expense,
-            'sumProfit': sum_profit,
-            'percentIncome': percent_income,
-            'percentExpense': percent_expense,
-            'percentProfit': percent_profit,
-            'datathismonth': data_this_month,
-            'datalastmonth': data_last_month,
-            'datathisyear': data_this_year,
-            'datalastyear': data_last_year,
+            'data_income_this_month': data_income_this_month,
+            'data_expense_this_month': data_expense_this_month,
+            'data_income_this_year': data_income_this_year,
+            'data_expense_this_year': data_expense_this_year,
         })

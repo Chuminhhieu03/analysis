@@ -1,14 +1,46 @@
 // create a chart line for homepage with id canvas is "lineChartMonth"
-function createLineChartMonth(datathismonth, datalastmonth) {
+function createLineChartMonth(dataIncome, dataExpenses) {
   var ctx = document.getElementById("lineChartMonth").getContext("2d");
   var lineChartMonth = new Chart(ctx, {
     type: "line",
     data: {
-      labels: ["0", "5", "10", "15", "20", "25", "30"],
+      labels: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+      ],
       datasets: [
         {
-          label: "Tháng này",
-          data: [0, 10, 5, 2, 20, 30, 45],
+          label: "Thu Nhập",
+          data: dataIncome,
           backgroundColor: "rgba(83, 109, 220, 0.2)",
           borderColor: "rgba(83, 109, 220, 1)",
           pointStyle: "circle",
@@ -16,8 +48,8 @@ function createLineChartMonth(datathismonth, datalastmonth) {
           pointStyle: "circle",
         },
         {
-          label: "Tháng trước",
-          data: [0, 5, 2, 8, 15, 25, 30],
+          label: "Chi Tiêu",
+          data: dataExpenses,
           backgroundColor: "rgba(82, 205, 255, 0.2)",
           borderColor: "rgba(82, 205, 255, 1)",
           borderWidth: 1,
@@ -28,84 +60,100 @@ function createLineChartMonth(datathismonth, datalastmonth) {
     options: {
       aspectRatio: 3,
       scales: {
-        yAxes: [{
+        yAxes: [
+          {
             gridLines: {
-                display: true,
-                lineWidth: 0.5  // Adjust this value as needed
-            }
-        }],
-        xAxes: [{
+              display: true,
+              lineWidth: 0.5, // Adjust this value as needed
+            },
+          },
+        ],
+        xAxes: [
+          {
             gridLines: {
-                display: false
-            }
-        }],
+              display: false,
+            },
+          },
+        ],
       },
     },
   });
 }
-function createLineChartYear(datathisyear, datalastyear) {
-    var ctx = document.getElementById("lineChartYear").getContext("2d");
-    var lineChartMonth = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
-        datasets: [
+function createLineChartYear(dataIncome, dataExpenses) {
+  var ctx = document.getElementById("lineChartYear").getContext("2d");
+  var lineChartMonth = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [
+        "Tháng 1",
+        "Tháng 2",
+        "Tháng 3",
+        "Tháng 4",
+        "Tháng 5",
+        "Tháng 6",
+        "Tháng 7",
+        "Tháng 8",
+        "Tháng 9",
+        "Tháng 10",
+        "Tháng 11",
+        "Tháng 12",
+      ],
+      datasets: [
+        {
+          label: "Thu Nhập",
+          data: dataIncome,
+          backgroundColor: "rgba(83, 109, 220, 0.2)",
+          borderColor: "rgba(83, 109, 220, 1)",
+          pointStyle: "circle",
+          borderWidth: 1,
+          pointStyle: "circle",
+        },
+        {
+          label: "Chi tiêu",
+          data: dataExpenses,
+          backgroundColor: "rgba(82, 205, 255, 0.2)",
+          borderColor: "rgba(82, 205, 255, 1)",
+          borderWidth: 1,
+          pointStyle: "circle",
+        },
+      ],
+    },
+    options: {
+      aspectRatio: 3,
+      scales: {
+        yAxes: [
           {
-            label: "Năm nay",
-            data: [2, 10, 5, 2, 20, 30, 45, 50, 60, 70, 80, 90],
-            backgroundColor: "rgba(83, 109, 220, 0.2)",
-            borderColor: "rgba(83, 109, 220, 1)",
-            pointStyle: "circle",
-            borderWidth: 1,
-            pointStyle: "circle",
+            gridLines: {
+              display: true,
+              lineWidth: 0.5, // Adjust this value as needed
+            },
           },
+        ],
+        xAxes: [
           {
-            label: "Năm ngoái",
-            data: [0, 5, 2, 8, 15, 25, 30, 40, 50, 60, 70, 80],
-            backgroundColor: "rgba(82, 205, 255, 0.2)",
-            borderColor: "rgba(82, 205, 255, 1)",
-            borderWidth: 1,
-            pointStyle: "circle",
+            gridLines: {
+              display: false,
+            },
           },
         ],
       },
-      options: {
-        aspectRatio: 3,
-        scales: {
-          yAxes: [{
-              gridLines: {
-                  display: true,
-                  lineWidth: 0.5  // Adjust this value as needed
-              }
-          }],
-          xAxes: [{
-              gridLines: {
-                  display: false
-              }
-          }],
-        },
-      },
-    });
-  }
-document.addEventListener("DOMContentLoaded", function () {
-  var sumIncome = document.getElementById("hp_sumIncome");
-  var sumExpense = document.getElementById("hp_sumExpense");
-  var sumProfit = document.getElementById("hp_sumProfit");
-  var percentIncome = document.getElementById("hp_percentIncome");
-  var percentExpense = document.getElementById("hp_percentExpense");
-  var percentProfit = document.getElementById("hp_percentProfit");
-  fetch("/get_data")
-  .then((response) => response.json())
-  .then((data) => {
-    sumIncome.innerHTML = data.sumIncome;
-    sumExpense.innerHTML = data.sumExpense;
-    sumProfit.innerHTML = data.sumProfit;
-    percentIncome.innerHTML = data.percentIncome;
-    percentExpense.innerHTML = data.percentExpense;
-    percentProfit.innerHTML = data.percentProfit;
-    createLineChartMonth(data.datathismonth, data.datalastmonth);
-    createLineChartYear(data.datathisyear, data.datalastyear);
+    },
   });
-  createLineChartMonth();
-  createLineChartYear();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  var username = document.getElementById("hp_username").value;
+  fetch(`/get_data?p=${username}`)
+    .then((response) => response.json())
+    .then((data) => {
+      createLineChartMonth(
+        data.data_income_this_month,
+        data.data_expense_this_month
+      );
+      createLineChartYear(
+        data.data_income_this_year,
+        data.data_expense_this_year
+      );
+    });
+  // createLineChartMonth();
+  // createLineChartYear();
 });

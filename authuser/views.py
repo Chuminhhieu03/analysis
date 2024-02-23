@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import UserProfile
 from .models import UserUpgrade
+from .models import FeedBack
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
@@ -12,6 +13,7 @@ from .utils import generate_token
 from django.views.generic import View
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as auth_logout
 from datetime import datetime
 # Create your views here.
 
@@ -43,7 +45,7 @@ def logout(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
-    logout(request)
+    auth_logout(request)
     messages.info(request, "Đăng xuất thành công")
     return redirect('/auth/login')
 
@@ -71,10 +73,12 @@ def signup(request):
         # create
         user = User.objects.create_user(
             username=username, email=email, password=pass1)
-        user.first_name = f"Member #{user.id}"
+        user.first_name = f"Người dùng #{user.id}"
         user.is_active = False
         user.userprofile = UserProfile()
         user.userprofile.save()
+        user.userupgrade = UserUpgrade()
+        user.userupgrade.save()
         user.save()
         email_subject = "Kích hoạt tài khoản"
         message = render_to_string('activate_account.html', {
@@ -229,7 +233,15 @@ def feedback_user(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
-    return render(request, "feedback.html")
+    if request.method == "GET":
+        return render(request, 'feedback.html')
+    if request.method == "POST":
+        title = request.POST['title']
+        content = request.POST['content']
+        feedback = FeedBack(user=request.user, title=title, content=content,email=request.user.email,phone=request.user.userprofile.phone)
+        feedback.save()
+        messages.success(request, "Gửi phản hồi thành công, chúng tôi sẽ liên hệ với bạn sớm nhất")
+        return render(request, 'feedback.html')
 
 
 def changepassword(request):
@@ -280,6 +292,12 @@ def upgrade(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
+    if request.user.userupgrade.state == "2":
+        messages.warning(request, "Yêu cầu nâng cấp tài khoản của bạn đang chờ duyệt")
+        return redirect('upgrade_success')
+    if request.user.userupgrade.state == "1":
+        messages.warning(request, "Tài khoản của bạn đã được nâng cấp")
+        return redirect('upgrade_success')
     if request.method == "GET":
         return render(request, 'upgrade.html')
     if request.method == "POST":
@@ -290,6 +308,12 @@ def upgrade_checkout(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
+    if request.user.userupgrade.state == "2":
+        messages.warning(request, "Yêu cầu nâng cấp tài khoản của bạn đang chờ duyệt")
+        return redirect('upgrade_success')
+    if request.user.userupgrade.state == "1":
+        messages.warning(request, "Tài khoản của bạn đã được nâng cấp")
+        return redirect('upgrade_success')
     if request.method == "GET":
         return render(request, 'upgrade_checkout.html')
     if request.method == "POST":

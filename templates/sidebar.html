@@ -310,12 +310,22 @@
       </a>
     </li>
   </ul>
+  {% if request.user.userupgrade.upgrade == False %}
   <div class="sidebar_upgrade_btn">
     <button id="upgrade_btn" type="button" class="btn btn-primary btn-icon-text">
       <i class="ti-user btn-icon-prepend"></i>
       Nâng cấp tài khoản
     </button>
   </div>
+  {% endif %}
+  {% if request.user.userupgrade.upgrade == True %}
+  <div class="sidebar_upgrade_btn">
+    <button id="upgrade_btn" type="button" class="btn btn-primary btn-icon-text">
+      <i class="ti-user btn-icon-prepend"></i>
+      Thông tin tài khoản đã nâng cấp
+    </button>
+  </div>
+  {% endif %}
 </nav>
 <script>
   var btn = document.getElementById("upgrade_btn");

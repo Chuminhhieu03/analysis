@@ -80,6 +80,9 @@ def create_pdf(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
+    if request.user.userupgrade.upgrade == False:
+        messages.warning(request, "Bạn chưa nâng cấp tài khoản")
+        return redirect('upgrade')
     user = request.user
     buffer = io.BytesIO()
     # Create the PDF object, using the buffer as its "file."
@@ -134,6 +137,9 @@ def import_excel(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
+    if request.user.userupgrade.upgrade == False:
+        messages.warning(request, "Bạn chưa nâng cấp tài khoản")
+        return redirect('upgrade')
     if request.method == 'POST':
         file = request.FILES['file']
         if not file.name.endswith('.xlsx') and not file.name.endswith('.xls'):

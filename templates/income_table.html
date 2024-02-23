@@ -28,6 +28,7 @@
                   <i class="mdi mdi-magnify"></i>
                 </button>
               </form>
+              {% if request.user.userupgrade.upgrade == True %}
               <button id="income_import_btn" class="btn btn-otline-dark align-items-center">
                 <i class="icon-upload"></i> Import
               </button>
@@ -38,6 +39,14 @@
               <a href="/income/create_pdf" class="btn btn-otline-dark">
                 <i class="icon-download"></i> Export
               </a>
+              {% else %}
+              <button id="income_import_btn" class="btn btn-otline-dark align-items-center" disabled>
+                <i class="icon-upload"></i> Cần nâng cấp
+              </button>
+              <button href="/income/create_pdf" class="btn btn-otline-dark" disabled>
+                <i class="icon-download"></i> Cần nâng cấp
+              </button>
+              {% endif %}
               <a href="/income/add" class="btn btn-primary text-white me-0">
                 <i class="mdi mdi-plus-circle-outline"></i> Thêm
               </a>

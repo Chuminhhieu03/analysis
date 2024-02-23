@@ -1,8 +1,6 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Nâng cấp chi tiết{% endblock title %}
+{% extends 'base.html' %} {% load static %} 
+{% block title %}Nâng cấp chi tiết{% endblock title %} 
 {% block content %}
-{% if request.user.userupgrade.upgrade == True %}
 <div class="content-wrapper">
   <div class="upgrade-success-page">
     <div class="payment-method">
@@ -40,47 +38,23 @@
                     Bạn có thể import dữ liệu từ file excel bằng cách nhấn vào
                     nút Import ở trong bảng dữ liệu
                     </p>
-                    <img src="{% static 'guide/guide_picture.png' %}" alt="import" class="img-fluid">
                     <p>
                     Bạn cần tạo file excel theo mẫu sau: <a
-                        href="{% static 'guide/guide_excel.xlsx' %}"
+                        href="{% static 'vendors/excel_template.xlsx' %}"
                         download
                         >Tải mẫu</a
                     >
                     </p>
                     <p class="text-danger">
                     Bạn cần chú ý rằng file excel của bạn cần phải đúng định dạng
-                    mẫu
+                    mẫu ("Chú ý rằng mẫu trên là income nếu muốn đổi sang Chi tiêu thì đổi income thành expense")
                     </p>
             </div>
           </div>
         </div>
       </div>
+
+      {% endblock content %}
     </div>
   </div>
 </div>
-{% else %}
-<div class="content-wrapper">
-  <div class="upgrade-success-page">
-
-    <div class="payment-method">
-      <div class="row">
-        <div class="offset-margin col-lg-12 col-md-8 col-sm-12 col-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body text-center">
-              <h4 class="card-title">Cám ơn vì bạn đã đồng ý mua tài khoản nâng cấp của chúng tôi</h4>
-              <div class="card-description">
-                <p>Chúng tôi sẽ kiểm tra thông tin và kích hoạt tài khoản trong vòng 24 giờ</p>
-                <p class="italic text-danger"> Nếu thông tin của bạn chưa chính xác chúng tôi sẽ liên hệ tới bạn và yêu cầu bạn hoàn thiện lại quá trình nâng cấp </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-{% endif %}
-
-{% endblock content %}
