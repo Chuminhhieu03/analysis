@@ -14,8 +14,12 @@ from decimal import Decimal
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.db.models import Q
+from pathlib import Path
 
-font_path = ('static/fonts/DejaVuSans/DejaVuSans.ttf')
+THIS_FOLDER = Path(__file__).parent.resolve()
+ROOT_FOLDER = THIS_FOLDER.parent
+font_path = str(ROOT_FOLDER / 'static' /'fonts'/'DejaVuSans'/ 'DejaVuSans.ttf')
+
 pdfmetrics.registerFont(TTFont('DejaVu', font_path))
 
 

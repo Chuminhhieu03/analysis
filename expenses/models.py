@@ -22,4 +22,4 @@ class Expenses(models.Model):
         ordering = ['-date']
 
     def __str__(self):
-        return self.user.username
+        return self.user.username + " - " + str(self.date) + " - " + SOURCE_CHOICES[int(self.source)][1]

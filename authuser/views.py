@@ -47,7 +47,7 @@ def logout(request):
         return redirect('login')
     auth_logout(request)
     messages.info(request, "Đăng xuất thành công")
-    return redirect('/auth/login')
+    return redirect('/user/login')
 
 
 def signup(request):
@@ -60,7 +60,7 @@ def signup(request):
         pass2 = request.POST['pass2']
         # check username is already exist or not
         if User.objects.filter(username=username).exists():
-            messages.warning(request, "Tài khoản này đã tồn tại")
+            messages.warning(request, "Tài khoản này đã tồn tại trong hệ thống")
             return render(request, 'signup.html')
         # check email is already exist or not
         if User.objects.filter(email=email).exists():
@@ -131,7 +131,7 @@ class ActivateAccountView(View):
             user.is_active = True
             user.save()
             messages.success(request, "Kích hoạt tài khoản thành công")
-            return redirect('/auth/login')
+            return redirect('/user/login')
         messages.warning(request, "Bạn đã kích hoạt tài khoản rồi")
         return render(request, 'login.html')
 
@@ -163,27 +163,27 @@ class SetNewPasswordView(View):
         confirm_password = request.POST['pass2']
         if password != confirm_password:
             messages.warning(request, "Mật khẩu không khớp")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         # check valid password with condition that password must have at least 1 uppercase, 1 lowercase, 1 number and 1 special character
         if not any(char.isupper() for char in password):
             messages.warning(
                 request, "Mật khẩu phải có ít nhất 1 ký tự viết hoa")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         if not any(char.islower() for char in password):
             messages.warning(
                 request, "Mật khẩu phải có ít nhất 1 ký tự viết thường")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         if not any(char.isdigit() for char in password):
             messages.warning(request, "Mật khẩu phải có ít nhất 1 chữ số")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         if not any(not char.isalnum() for char in password):
             messages.warning(
                 request, "Mật khẩu phải có ít nhất 1 ký tự đặc biệt")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         if len(password) < 8:
             messages.warning(
                 request, "Mật khẩu phải có ít nhất 8 ký tự")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
         try:
             user_id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=user_id)
@@ -194,7 +194,7 @@ class SetNewPasswordView(View):
             return redirect('/user/login/')
         except DjangoUnicodeDecodeError as identifier:
             messages.error(request, "Một lỗi đã xảy ra, vui lòng thử lại")
-            return render(request, 'set-new-password.html', context)
+            return render(request, 'set_new_password.html', context)
 
 
 def index(request):
@@ -217,6 +217,10 @@ def edit_profile(request):
         address = request.POST['address']
         phone = request.POST['phone']
         dob = request.POST['birth']
+        # check avatar is not a image file then return error
+        if avatar.name.split('.')[-1] not in ['jpg', 'jpeg', 'png', 'gif']:
+            messages.warning(request, "Ảnh đại diện phải là file ảnh")
+            return render(request, 'editprofile.html')
         if avatar:
             user.userprofile.avatar = avatar
         user.first_name = fullname

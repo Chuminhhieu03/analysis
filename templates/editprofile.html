@@ -1,5 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block title%}Cập nhật Hồ
-sơ{%endblock title %} {% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title%}Cập nhật Hồ sơ
+{%endblock title %} {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/nam.css' %}" />
 <link
   rel="stylesheet"
@@ -27,11 +29,14 @@ sơ{%endblock title %} {% block content %}
               <div class="small font-italic text-muted mb-4">
                 JPG hoặc PNG không quá 5MB
               </div>
+              <span id="notiInputFile" class="text-danger"> </span>
               <!-- Profile picture upload button-->
               <div class="form-group">
                 <label class="btn btn-primary">
-                  Tải ảnh lên<input
+                  Tải ảnh lên
+                  <input
                     name="avatar"
+                    id="inputGroupFile01"
                     type="file"
                     style="display: none"
                   />
@@ -173,5 +178,11 @@ sơ{%endblock title %} {% block content %}
       autoclose: true,
     });
   });
+  // create a text when a file is selected by document id
+  document
+    .getElementById("inputGroupFile01")
+    .addEventListener("change", function () {
+      document.getElementById("notiInputFile").innerHTML = "Bạn đã chọn ảnh";
+    });
 </script>
 {% endblock content %}

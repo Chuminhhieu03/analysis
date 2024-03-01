@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     address = models.CharField(max_length=100, default="")
 
     def __str__(self):
-        return self.user.email
+        return self.user.username  + " - " +  self.user.email
 
 
 class UserUpgrade(models.Model):
@@ -27,7 +27,7 @@ class UserUpgrade(models.Model):
         max_length=100, choices=STATE_CHOICES, default='3')
 
     def __str__(self):
-        return self.user.username + " - " + self.state
+        return self.user.username + " - " + STATE_CHOICES[int(self.state)][1]
 
 STATUS_CHOICES = (
     ('0', 'Chưa phản hồi'),
