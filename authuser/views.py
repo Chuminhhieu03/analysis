@@ -217,7 +217,6 @@ def edit_profile(request):
         address = request.POST['address']
         phone = request.POST['phone']
         dob = request.POST['birth']
-        # check avatar is not a image file then return error
         if avatar.name.split('.')[-1] not in ['jpg', 'jpeg', 'png', 'gif']:
             messages.warning(request, "Ảnh đại diện phải là file ảnh")
             return render(request, 'editprofile.html')
