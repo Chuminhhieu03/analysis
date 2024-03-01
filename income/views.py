@@ -30,10 +30,26 @@ def index(request):
     if request.method == 'GET':
         query = request.GET.get('q', '')
         user = request.user
-        incomes = Income.objects.filter(
-            Q(user=user) & (Q(description__icontains=query) | Q(amount__icontains=query) | Q(
-                date__icontains=query) | Q(source__icontains=query))
-        ).order_by('-date')
+        try :
+            query_date = datetime.strptime(query, '%d/%m/%Y')
+            incomes = Income.objects.filter(
+                Q(user=user) & 
+                (
+                    Q(date=query_date)
+                )
+            ).order_by('-date')
+        except:
+            SOURCE_CHOICES = ["Lương", "Kinh Doanh", "Phụ Thu Nhập", "Khác"]
+            # return the source choices index if value contains query
+            source_value = next((str(i) for i, item in enumerate(SOURCE_CHOICES) if query.lower() in item.lower()), None)
+            incomes = Income.objects.filter(
+                Q(user=user) & 
+                (
+                    Q(description__icontains=query) | 
+                    Q(amount__icontains=query) | 
+                    Q(source=source_value)
+                )
+            ).order_by('-date')
         paginator = Paginator(incomes, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -158,8 +174,8 @@ def import_excel(request):
                 income.save()
         except:
             messages.warning(
-                request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu')
-            return redirect('income')
+                request, 'Kiểm tra lại định dạng file excel, có thể có lỗi trong quá trình import dữ liệu. Vui lòng đọc lại file hướng dẫn')
+            return redirect('upgrade_success')
         messages.success(request, 'Import thành công')
         return redirect('income')
     return redirect('income')
