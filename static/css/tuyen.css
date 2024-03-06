@@ -11,3 +11,7 @@
 .income-chart-page .datepicker span span, .profile-user-page .datepicker span span, .expense-chart-page .datepicker span span {
   border: none;
 }
+
+.expenses-table-page .inner-wrap {
+  margin-bottom: 16px;
+}
