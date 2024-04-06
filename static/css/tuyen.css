@@ -12,6 +12,12 @@
   border: none;
 }
 
-.expenses-table-page .inner-wrap {
+.expenses-table-page .inner-wrap, .income-table-page .inner-wrap {
   margin-bottom: 16px;
+}
+
+@media (max-width: 575.98px) {
+  .expenses-table-page .inner-wrap span, .income-table-page .inner-wrap span {
+    display: none;
+  }
 }

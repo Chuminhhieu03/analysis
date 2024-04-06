@@ -11,6 +11,7 @@
         <div class="card-body">
           <h4 class="card-title">Bảng Chi tiêu</h4>
           <div class="row">
+
             <div class="col-md-12">
               <div class="row text-center">
 
@@ -31,10 +32,11 @@
                   </form>
                 </div>
                 
-                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4">
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
                   <!-- import excel  -->
                   <button id="expenses_import_btn" class="btn btn-otline-dark align-items-center">
-                    <i class="icon-upload"></i> Import
+                    <i class="icon-upload"></i> 
+                    <span>Import</span>
                   </button>
                   <form action="/expenses/import_excel" method="POST" id="expenses_import_form" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -42,17 +44,19 @@
                   </form>
                 </div>
 
-                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4">
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
                   <!-- export excel  -->
                   <a href="/expenses/create_pdf" class="btn btn-otline-dark">
-                    <i class="icon-download"></i> Export
+                    <i class="icon-download"></i> 
+                    <span>Export</span>
                   </a>
                 </div>
 
-                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4">
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
                   <!-- them chi tieu -->
                   <a href="/expenses/add" class="btn btn-primary text-white me-0">
-                    <i class="mdi mdi-plus-circle-outline"></i> Thêm
+                    <i class="mdi mdi-plus-circle-outline"></i> 
+                    <span>Thêm</span>
                   </a>
                 </div>
                 
@@ -60,6 +64,7 @@
               </div>
               
             </div>
+            
           </div>
           <div class="table-responsive mt-4">
             <table class="table">
@@ -154,6 +159,8 @@
       });
     }
   });
+
+  
 </script>
 <script src="{% static 'js/hieujs/expenses_import.js' %}"></script>
 {% endblock content %}
