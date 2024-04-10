@@ -44,6 +44,7 @@
               </div>
             </form>
           </div>
+          <input type="hidden" id="espense_user_type" name="user_type" value="{{ user.userprofile.type }}" />
         </div>
       </div>
     </div>
@@ -79,7 +80,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-food"></i>
                     </td>
+                    {% if user.userprofile.type == '1' %}
+                    <td>Trả lương</td>
+                    {% else %}
                     <td>Ăn uống</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div
@@ -98,7 +103,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-tshirt-crew"></i>
                     </td>
+                    {% if user.userprofile.type == '1' %}
+                    <td>Dịch vụ phát sinh</td>
+                    {% else %}
                     <td>Quần áo</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div
@@ -117,7 +126,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-beach"></i>
                     </td>
+                    {% if user.userprofile.type == '1' %}
+                    <td>Mặt bằng</td>
+                    {% else %}
                     <td>Du lịch và giải trí</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div

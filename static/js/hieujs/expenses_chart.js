@@ -5,8 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
     viewMode: "months",
     minViewMode: "months",
   });
-
-  const labelSource = ["Ăn uống", "Quần áo", "Du lịch và giải trí", "Khác"];
+  const userType = document.getElementById("espense_user_type").value;
+  var labelSource = [];
+  if (userType === "0") {
+    labelSource = ["Ăn uống", "Quần áo", "Du lịch, vui chơi giải trí", "Khác"];
+  } else {
+    labelSource = ["Trả lương", "Dịch vụ phát sinh", "Mặt bằng", "Khác"];
+  }
   const backgroundColorSource = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"];
   const borderColorSource = ["#FF6383", "#36A1EB", "#FFCE55", "#4BC0C9"];
   var dataSource = [];

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Thêm sản phẩm{% endblock title %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Trang thêm sản phẩm</h4>
+          <form class="forms-sample"  method="POST" action="/product/add" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputUsername1">Tên</label>
+              <input name="name" type="text" class="form-control" placeholder="Nhập tên">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputUsername1">Giá</label>
+              <input name="price" type="text" class="form-control" placeholder="Nhập giá">
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectGender">Nguồn</label>
+                <select name="category" class="form-control">
+                  {% for category in multiCategories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+              <label>Chú thích</label>
+              <input name="description" type="text" class="form-control" placeholder="Chú thích">
+            </div>
+            <div class="form-group">
+              <label>Tải ảnh lên</label>
+                <input type="file" name="image" class="fileupload-default" id="product_image" hidden>
+                <div class="input-group col-xs-12">
+                  <input type="" class="form-control file-upload-info" disabled="" placeholder="Chọn ảnh" id="product_image_text">
+                  <span class="input-group-append">
+                    <button class="file-upload-browse btn btn-primary" id="upload_product_image"  type="button">Chọn thư mục</button>
+                  </span>
+                </div>
+            </div>
+            <div class="form-group">
+              <label>Hiển thị ảnh</label>
+              <div class="col-sm-12 flex">
+                <div style="display: flex; justify-content: center;">
+                  <img src="{% static 'images/favicon.png' %}" class="img-thumbnail" id="product_image_preview" style="width: 200px; height: 200px; border-radius: 100%;">
+                </div>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary me-2">Xác nhận</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var datepicker = document.querySelector("#datepicker-income-table");
+  $(datepicker).datepicker({
+      format: "dd/mm/yyyy",
+      todayHighlight: true,
+      autoclose: true,
+    });
+
+    var product_image = document.getElementById("product_image");
+    var product_image_text = document.getElementById("product_image_text");
+    var upload_product_image = document.getElementById("upload_product_image");
+    upload_product_image.addEventListener("click", function () {
+      product_image.click();
+    });
+    product_image.addEventListener("change", function () {
+      var file = product_image.files[0];
+      product_image_text.value = file.name;
+
+      // Create a URL representing the selected file
+      var fileURL = URL.createObjectURL(file);
+
+      // Set the URL as the src attribute of the img tag
+      product_image_preview.src = fileURL;
+    });
+
+});
+
+
+</script>
+{% endblock content %}

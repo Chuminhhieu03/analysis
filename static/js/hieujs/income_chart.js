@@ -5,8 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
     viewMode: "months",
     minViewMode: "months",
   });
-
-  const labelSource = ["Lương", "Kinh Doanh", "Phụ thu nhập", "Khác"];
+  const userType = document.getElementById("income_user_type").value;
+  var labelSource = [];
+  if (userType === "0") {
+    labelSource = ["Lương", "Kinh Doanh", "Phụ thu nhập", "Khác"];
+  } else {
+    labelSource = ["Sản phẩm", "Dịch vụ", "Quảng cáo", "Khác"];
+  }
   const backgroundColorSource = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"];
   const borderColorSource = ["#FF6383", "#36A1EB", "#FFCE55", "#4BC0C9"];
   var dataSource = [];
@@ -76,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // convert String to Number
         dataSource = dataSource.map((item) => parseInt(item));
         sumData = dataSource[0] + dataSource[1] + dataSource[2] + dataSource[3];
-        console.log(sumData);
         salary_progress.style.width = `${(dataSource[0] / sumData) * 100}%`;
         business_progress.style.width = `${(dataSource[1] / sumData) * 100}%`;
         other_progress.style.width = `${(dataSource[2] / sumData) * 100}%`;

@@ -58,6 +58,7 @@ def signup(request):
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
+        typeUser = request.POST['typeUser']
         # check username is already exist or not
         if User.objects.filter(username=username).exists():
             messages.warning(request, "Tài khoản này đã tồn tại trong hệ thống")
@@ -76,6 +77,7 @@ def signup(request):
         user.first_name = f"Người dùng #{user.id}"
         user.is_active = False
         user.userprofile = UserProfile()
+        user.userprofile.type = typeUser
         user.userprofile.save()
         user.userupgrade = UserUpgrade()
         user.userupgrade.save()

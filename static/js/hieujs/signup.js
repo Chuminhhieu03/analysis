@@ -4,12 +4,16 @@ const validateForm = (event) => {
   const form = document.getElementById("signup-form");
   const username = form.username.value;
   const email = form.email.value;
+  const type = form.typeUser.value;
+  console.log(type);
   const password = form.pass1.value;
   const confirmPassword = form.pass2.value;
   const errorEmail = document.getElementById("error-email");
   const errorUsername = document.getElementById("error-username");
   const errorPassword = document.getElementById("error-pass1");
   const errorConfirmPassword = document.getElementById("error-pass2");
+  const errorType = document.getElementById("error-type");
+  console.log(errorType);
   // check valid username
   if (username === "") {
     errorUsername.textContent = "Tài khoản không được để trống";
@@ -30,6 +34,13 @@ const validateForm = (event) => {
   } else {
     errorEmail.textContent = "";
   }
+
+  if (type === "") {
+    errorType.textContent = "Chọn loại người dùng";
+    return false;
+  } else {
+    errorType.textContent = "";
+  }
   // check valid password
   const regex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -39,7 +50,8 @@ const validateForm = (event) => {
   }
   // check valid password with condition that password must have at least 1 uppercase, 1 lowercase, 1 number and 1 special character
   else if (!regex.test(password)) {
-    errorPassword.textContent = "Mật khẩu không hợp lệ";
+    errorPassword.textContent =
+      "Mật khẩu phải có 1 chữ viết hoa, 1 chữ thường 1 số và 1 ký tự đặc biệt";
     return false;
   } else {
     errorPassword.textContent = "";

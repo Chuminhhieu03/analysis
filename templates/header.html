@@ -27,10 +27,17 @@
     <ul class="navbar-nav">
       <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
         <h1 class="welcome-text">
-          Xin chào,
-          <span class="text-black fw-bold">{{request.user.first_name}}</span>
+          {% if request.user.userprofile.type == '1' %}
+          <span class="text-black fw-bold">Xin chào doanh nghiệp, {{request.user.first_name}}</span>
+          {% else %}
+          <span class="text-black fw-bold">Xin chào, {{request.user.first_name}}</span>
+          {% endif %}
         </h1>
+        {% if request.user.userprofile.type == '1' %}
+        <h3 class="welcome-sub-text">Chúc doanh nghiệp của bạn phát triển mạnh mẽ</h3>
+        {% else %}
         <h3 class="welcome-sub-text">Chúc bạn có một ngày vui vẻ</h3>
+        {% endif %}
       </li>
     </ul>
     <ul class="navbar-nav ms-auto">

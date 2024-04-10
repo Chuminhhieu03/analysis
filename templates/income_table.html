@@ -68,14 +68,26 @@
                 <tr>
                   <td>{{ income.amount|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>
-                    {% if income.source == "0" %} 
-                        Lương 
-                    {% elif income.source == "1" %} 
-                        Kinh Doanh 
-                    {% elif income.source == "2" %} 
-                        Phụ thu nhập 
-                    {% else %} 
-                        Khác 
+                    {% if request.user.userprofile.type == "1" %}
+                      {% if income.source == "0" %} 
+                          Sản phẩm 
+                      {% elif income.source == "1" %} 
+                          Dịch vụ 
+                      {% elif income.source == "2" %} 
+                          Quảng cáo 
+                      {% else %} 
+                          Khác 
+                      {% endif %}
+                    {% else %}
+                      {% if income.source == "0" %} 
+                          Lương 
+                      {% elif income.source == "1" %} 
+                          Kinh Doanh 
+                      {% elif income.source == "2" %} 
+                          Phụ thu nhập 
+                      {% else %} 
+                          Khác 
+                      {% endif %}
                     {% endif %}
                   </td>
                   <td>{{ income.date|date:"d/m/Y" }}</td>

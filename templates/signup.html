@@ -1,7 +1,5 @@
-{% extends 'baseLogin.html' %} 
-{% load static %} 
-{% block title %}Đăng ký{%endblock title %} 
-{% block content %}
+{% extends 'baseLogin.html' %} {% load static %} {% block title %}Đăng
+ký{%endblock title %} {% block content %}
 <div class="container-fluid page-body-wrapper full-page-wrapper">
   <div class="content-wrapper d-flex align-items-center auth px-0">
     <div class="row w-100 mx-0">
@@ -38,6 +36,14 @@
                 placeholder="Nhập Email"
               />
               <span class="text-danger" id="error-email"></span>
+            </div>
+            <div class="form-group">
+              <select class="form-control form-control-lg" name="typeUser" style="color: black;">
+                <option value="">----Chọn định hướng tài khoản----</option>
+                <option value="0">Tài khoản cá nhân</option>
+                <option value="1">Tài khoản doanh nghiệp</option>
+              </select>
+              <span class="text-danger" id="error-type"></span>
             </div>
             <div class="form-group">
               <input

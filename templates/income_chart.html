@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% load static %} 
+{% extends 'base.html' %} 
+{% load static %} 
 {% block title%}Biểu đồ{%endblock title %} 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -43,6 +44,7 @@
                   Xem
                 </button>
               </div>
+              <input type="hidden" id="income_user_type" name="user_type" value="{{ user.userprofile.type }}" />
             </form>
           </div>
         </div>
@@ -80,7 +82,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-wallet"></i>
                     </td>
+                    {% if user.userprofile.type == "0"%}
                     <td>Lương</td>
+                    {% else %}
+                    <td>Sản phẩm</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div
@@ -99,7 +105,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-skype"></i>
                     </td>
-                    <td>Kinh Doanh</td>
+                    {% if user.userprofile.type == "0"%}
+                    <td>Kinh doanh</td>
+                    {% else %}
+                    <td>Dịch vụ</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div
@@ -118,7 +128,11 @@
                     <td class="py-1">
                       <i class="mdi mdi-skype-business"></i>
                     </td>
+                    {% if user.userprofile.type == "0"%}
                     <td>Phụ kinh doanh</td>
+                    {% else %}
+                    <td>Quảng cáo</td>
+                    {% endif %}
                     <td>
                       <div class="progress">
                         <div
@@ -152,6 +166,7 @@
                       <span id="other_amount">$ 0</span>
                     </td>
                   </tr>
+                  
                 </tbody>
               </table>
             </div>

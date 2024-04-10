@@ -1,12 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-SOURCE_CHOICES = (
-    ('0', 'Lương'),
-    ('1', 'Kinh Doanh'),
-    ('2', 'Phụ Thu Nhập'),
-    ('3', 'Khác'),
-)
+from income.constVar import SOURCE_CHOICES
 
 
 class Income(models.Model):

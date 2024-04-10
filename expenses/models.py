@@ -1,13 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-SOURCE_CHOICES = (
-    ('0', 'Ăn uống'),
-    ('1', 'Quàn áo'),
-    ('2', 'Du lịch, vui chơi giải trí'),
-    ('3', 'Khác'),
-)
-
+from expenses.constVar import SOURCE_CHOICES
 
 class Expenses(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

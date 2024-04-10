@@ -14,8 +14,14 @@ from decimal import Decimal
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.db.models import Q
+from pathlib import Path
+from expenses.constVar import SOURCE_USER_ARR, SOURCE_BUSINESS_ARR
 
-font_path = ('static/fonts/DejaVuSans/DejaVuSans.ttf')
+# Cấu hình đường dẫn font
+THIS_FOLDER = Path(__file__).parent.resolve()
+ROOT_FOLDER = THIS_FOLDER.parent
+font_path = str(ROOT_FOLDER / 'static' /'fonts'/'DejaVuSans'/ 'DejaVuSans.ttf')
+
 pdfmetrics.registerFont(TTFont('DejaVu', font_path))
 
 
@@ -35,10 +41,11 @@ def index(request):
                 )
             ).order_by('-date')
         except:
-            SOURCE_CHOICES = ["Ăn uống", "Quần áo", "Du lịch và giải trí", "Khác"]
+            if user.userprofile.type == "1":
+                source_value = next((str(i) for i, item in enumerate(SOURCE_BUSINESS_ARR) if query.lower() in item.lower()), None)
+            else:
+                source_value = next((str(i) for i, item in enumerate(SOURCE_USER_ARR) if query.lower() in item.lower()), None)
             # return the source choices index if value contains query
-            source_value = next((str(i) for i, item in enumerate(
-                SOURCE_CHOICES) if query.lower() in item.lower()), None)
             expenses = Expenses.objects.filter(
                 Q(user=user) &
                 (
@@ -111,10 +118,13 @@ def create_pdf(request):
     # convert amount to int and have a comma every 3 numbers
     for expenses in expensess:
         expenses.amount = '{:,}'.format(int(expenses.amount))
-    SourceLable = ['Ăn uống', 'Quần áo', 'Du lịch và giải trí', 'Khác']
+    SourceLable = SOURCE_USER_ARR if user.userprofile.type == "0" else SOURCE_BUSINESS_ARR
     p.setFont('DejaVu', 12)
     # i want to create a table for the expensess
-    p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
+    if user.userprofile.type == "1":
+        p.drawString(100, 750, f"Báo cáo Thu nhập doanh nghiệp {user.username}")
+    else: 
+        p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
     p.drawString(100, 730, "--------------------------------------------")
     p.drawString(100, 710, "Ngày")
     p.drawString(200, 710, "Loại")
@@ -125,7 +135,10 @@ def create_pdf(request):
         if y < 40:
             p.showPage()
             p.setFont('DejaVu', 12)
-            p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
+            if user.userprofile.type == "1":
+                p.drawString(100, 750, f"Báo cáo Thu nhập doanh nghiệp {user.username}")
+            else: 
+                p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
             p.drawString(
                 100, 730, "--------------------------------------------")
             p.drawString(100, 710, "Ngày")

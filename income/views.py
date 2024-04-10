@@ -15,7 +15,9 @@ from django.core.paginator import Paginator
 from datetime import datetime
 from django.db.models import Q
 from pathlib import Path
+from income.constVar import SOURCE_USER_ARR, SOURCE_BUSINESS_ARR
 
+# Cấu hình đường dẫn font
 THIS_FOLDER = Path(__file__).parent.resolve()
 ROOT_FOLDER = THIS_FOLDER.parent
 font_path = str(ROOT_FOLDER / 'static' /'fonts'/'DejaVuSans'/ 'DejaVuSans.ttf')
@@ -39,9 +41,11 @@ def index(request):
                 )
             ).order_by('-date')
         except:
-            SOURCE_CHOICES = ["Lương", "Kinh Doanh", "Phụ Thu Nhập", "Khác"]
             # return the source choices index if value contains query
-            source_value = next((str(i) for i, item in enumerate(SOURCE_CHOICES) if query.lower() in item.lower()), None)
+            if user.userprofile.type == "1":
+                source_value = next((str(i) for i, item in enumerate(SOURCE_BUSINESS_ARR) if query.lower() in item.lower()), None)
+            else:
+                source_value = next((str(i) for i, item in enumerate(SOURCE_USER_ARR) if query.lower() in item.lower()), None)
             incomes = Income.objects.filter(
                 Q(user=user) & 
                 (
@@ -72,7 +76,7 @@ def get_chart_data(request):
         data = json.loads(request.body)
         date = data.get('date')
         if date is None:
-            return JsonResponse({'error': 'Missing date parameter'}, status=400)
+            return JsonResponse({'error': 'Chưa điền ngày'}, status=400)
         # Get the income data for the user and date provided by format mm/yyyy
         income = Income.objects.filter(user=user, date__month=date.split(
             '/')[0], date__year=date.split('/')[1])
@@ -114,10 +118,16 @@ def create_pdf(request):
     # convert amount to int and have a comma every 3 numbers
     for income in incomes:
         income.amount = '{:,}'.format(int(income.amount))
-    SourceLable = ['Lương', 'Kinh doanh', 'Phụ thu nhập', 'Khác']
+    if user.userprofile.type == "1":
+        SourceLable = SOURCE_BUSINESS_ARR
+    else:
+        SourceLable = SOURCE_USER_ARR
     p.setFont('DejaVu', 12)
     # i want to create a table for the incomes
-    p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
+    if user.userprofile.type == "1":
+        p.drawString(100, 750, f"Báo cáo Thu nhập doanh nghiệp {user.username}")
+    else: 
+        p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
     p.drawString(100, 730, "--------------------------------------------")
     p.drawString(100, 710, "Ngày")
     p.drawString(200, 710, "Loại")
@@ -128,7 +138,10 @@ def create_pdf(request):
         if y < 40:
             p.showPage()
             p.setFont('DejaVu', 12)
-            p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
+            if user.userprofile.type == "1":
+                p.drawString(100, 750, f"Báo cáo Thu nhập doanh nghiệp {user.username}")
+            else:
+                p.drawString(100, 750, f"Báo cáo Thu nhập cá nhân {user.username}")
             p.drawString(
                 100, 730, "--------------------------------------------")
             p.drawString(100, 710, "Ngày")

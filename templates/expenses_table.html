@@ -59,14 +59,26 @@
                 <tr>
                   <td>{{ expenses.amount|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>
-                    {% if expenses.source == "0" %} 
-                        Ăn uống
-                    {% elif expenses.source == "1" %} 
-                        Quần áo 
-                    {% elif expenses.source == "2" %} 
-                        Du lịch và giải trí
-                    {% else %} 
-                        Khác 
+                    {% if request.user.userprofile.type == "0" %}
+                      {% if expenses.source == "0" %} 
+                          Ăn uống
+                      {% elif expenses.source == "1" %} 
+                          Quần áo 
+                      {% elif expenses.source == "2" %} 
+                          Du lịch và giải trí
+                      {% else %} 
+                          Khác 
+                      {% endif %}
+                    {%else%}
+                      {% if expenses.source == "0" %} 
+                          Trả lương
+                      {% elif expenses.source == "1" %} 
+                          Dịch vụ phát sinh
+                      {% elif expenses.source == "2" %} 
+                          Mặt bằng
+                      {% else %} 
+                          Khác 
+                      {% endif %}
                     {% endif %}
                   </td>
                   <td>{{ expenses.date|date:"d/m/Y" }}</td>
