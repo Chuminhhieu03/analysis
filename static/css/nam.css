@@ -1,6 +1,3 @@
-body {
-    /* background: -webkit-linear-gradient(left, #3931af, #00c6ff); */
-}
 
 .user-emp-profile {
     padding: 3%;
@@ -181,4 +178,51 @@ body {
     padding-right: 0;
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+@media (max-width: 576px) {
+    .statistics-details, 
+    .row.flex-grow {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .text-danger {
+      flex-wrap: wrap  !important;
+    }
+  }
+
+/* Đảm bảo biểu đồ chỉ thu về chiều ngang khi hiển thị trên điện thoại */
+@media screen and (max-width: 768px) {
+    .homepageLineMonth {
+        overflow-x: scroll;
+    }
+}
+
+#logo-1 img {
+    max-width: 100%;
+    height: 100%;
+    margin: auto;
+    vertical-align: middle;
+}
+.navbar .navbar-brand-wrapper .navbar-brand.brand-logo{
+    display: block !important;
+    background-size: cover;
+    object-fit: fill;
+    width: 90px;
+    height: 90px;
+  }
+  @media screen and (max-width: 990px) {
+    #logo-1 img {
+        max-width: 100%;
+        height: 100%;
+        margin: auto;
+        vertical-align: middle;
+    }
+    .navbar .navbar-brand-wrapper .navbar-brand.brand-logo {
+        display: block !important;
+        background-size: cover;
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+    }
 }
