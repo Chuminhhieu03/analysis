@@ -4,44 +4,67 @@
 {% block title%}Bảng Chi tiêu{%endblock title %} 
 {% block content %}
 
-<div class="content-wrapper">
+<div class="content-wrapper table-page">
   <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Bảng Chi tiêu</h4>
           <div class="row">
-            <div
-              class="btn-wrapper col-md-12 d-flex justify-content-end align-center"
-              style="align-items: baseline"
-            >
-              <form method="GET" action="{% url 'expenses' %}" class="col-md-4 btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
-                <input
-                  type="text"
-                  name="q"
-                  class="form-control"
-                  id="searchField"
-                  placeholder="Tìm kiếm"
-                  style="height: 100%;"
-                />
-                <button class="btn btn-info align-items-center">
-                  <i class="mdi mdi-magnify"></i>
-                </button>
-              </form>
-              <button id="expenses_import_btn" class="btn btn-otline-dark align-items-center">
-                <i class="icon-upload"></i> Import
-              </button>
-              <form action="/expenses/import_excel" method="POST" id="expenses_import_form" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input name="file" type="file" id="fileInput" accept=".xls,.xlsx" style="display: none;">
-              </form>
-              <a href="/expenses/create_pdf" class="btn btn-otline-dark">
-                <i class="icon-download"></i> Export
-              </a>
-              <a href="/expenses/add" class="btn btn-primary text-white me-0">
-                <i class="mdi mdi-plus-circle-outline"></i> Thêm
-              </a>
+
+            <div class="col-md-12">
+              <div class="row text-center">
+
+                <div class="inner-wrap col-lg-6 col-md-12">
+                  <!-- tim kiem chi tieu -->
+                  <form method="GET" action="{% url 'expenses' %}" class="btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
+                    <input
+                      type="text"
+                      name="q"
+                      class="form-control"
+                      id="searchField"
+                      placeholder="Tìm kiếm"
+                      style="height: 100%;"
+                    />
+                    <button class="btn btn-info align-items-center">
+                      <i class="mdi mdi-magnify"></i>
+                    </button>
+                  </form>
+                </div>
+                
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- import excel  -->
+                  <button id="expenses_import_btn" class="btn btn-otline-dark align-items-center">
+                    <i class="icon-upload"></i> 
+                    <span>Import</span>
+                  </button>
+                  <form action="/expenses/import_excel" method="POST" id="expenses_import_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input name="file" type="file" id="fileInput" accept=".xls,.xlsx" style="display: none;">
+                  </form>
+                </div>
+
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- export excel  -->
+                  <a href="/expenses/create_pdf" class="btn btn-otline-dark">
+                    <i class="icon-download"></i> 
+                    <span>Export</span>
+                  </a>
+                </div>
+
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- them chi tieu -->
+                  <a href="/expenses/add" class="btn btn-primary text-white me-0">
+                    <i class="mdi mdi-plus-circle-outline"></i> 
+                    <span>Thêm</span>
+                  </a>
+                </div>
+                
+
+              </div>
+              
             </div>
+            
           </div>
           <div class="table-responsive mt-4">
             <table class="table">
@@ -148,6 +171,8 @@
       });
     }
   });
+
+  
 </script>
 <script src="{% static 'js/hieujs/expenses_import.js' %}"></script>
 {% endblock content %}

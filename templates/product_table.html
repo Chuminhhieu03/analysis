@@ -4,34 +4,52 @@
 {% block title%}Bảng sản phẩm{%endblock title %} 
 {% block content %}
 
-<div class="content-wrapper">
+<div class="content-wrapper table-page">
   <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Bảng sản phẩm của doanh nghiệp</h4>
           <div class="row">
-            <div
-              class="btn-wrapper col-md-12 d-flex justify-content-end align-center"
-              style="align-items: baseline"
-            >
-              <form method="GET" action="{% url 'product' %}" class="col-md-4 btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
-                <input
-                  type="text"
-                  name="q"
-                  class="form-control"
-                  id="searchField"
-                  placeholder="Tìm kiếm"
-                  style="height: 100%;"
-                />
-                <button class="btn btn-info align-items-center">
-                  <i class="mdi mdi-magnify"></i>
-                </button>
-              </form>
-              <a href="/product/add" class="btn btn-primary text-white me-0">
-                <i class="mdi mdi-plus-circle-outline"></i> Thêm
-              </a>
+
+            <div class="col-md-12">
+              <div class="row text-center">
+
+                <div class="inner-wrap col-lg-10 col-sm-8 col-8">
+                  <!-- tim kiem -->
+                  <form method="GET" action="{% url 'product' %}" class="btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
+                    <input
+                      type="text"
+                      name="q"
+                      class="form-control"
+                      id="searchField"
+                      placeholder="Tìm kiếm"
+                      style="height: 100%;"
+                    />
+                    <button class="btn btn-info align-items-center">
+                      <i class="mdi mdi-magnify"></i>
+                    </button>
+                  </form>
+                </div>
+                
+                <div class="inner-wrap col-lg-2 col-sm-4 col-4">
+                  <!-- them  -->
+                  <a href="/product/add" class="btn btn-primary me-0">
+                    <i class="mdi mdi-plus-circle-outline"></i> 
+                    <span>Thêm</span>
+                  </a>
+                </div>
+
+                
+                
+
+              </div>
+              
             </div>
+
+
+            
+
           </div>
           <div class="table-responsive mt-4">
             <table class="table">
