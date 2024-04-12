@@ -14,7 +14,7 @@ def AddProduct_Service(request):
         return redirect('login')
     if request.method == 'GET':
         multiCategories = Category.objects.filter(user=request.user)
-        return render(request, 'add_product.html', {'multiCategories': multiCategories})
+        return render(request, 'product/add_product.html', {'multiCategories': multiCategories})
     if request.method == 'POST':
         print(request.POST)
         name = request.POST.get('name')
@@ -52,7 +52,7 @@ def EditProduct_Service(request, id):
     product = Product.objects.get(id=id)
     if request.method == 'GET':
         multiCategories = Category.objects.filter(user=request.user)
-        return render(request, 'edit_product.html', {'product': product, 'multiCategories': multiCategories})
+        return render(request, 'product/edit_product.html', {'product': product, 'multiCategories': multiCategories})
     if request.method == 'POST':
         name = request.POST.get('name')
         price = request.POST.get('price')

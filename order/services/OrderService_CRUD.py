@@ -17,7 +17,7 @@ def AddOrder_Service(request):
     if request.method == 'GET':
         products = Product.objects.filter(user=request.user)
         customers = Customer.objects.filter(user=request.user)
-        return render(request, 'add_order.html', {'products': products, 'customers': customers})
+        return render(request, 'order/add_order.html', {'products': products, 'customers': customers})
     if request.method == 'POST':
         user = request.user
         customer_id = request.POST.get('customer')
@@ -58,7 +58,7 @@ def DetailOrder_Service(request, id):
         return redirect('login')
     order = Order.objects.get(id=id)
     orderDetails = OrderDetail.objects.filter(order=order)
-    return render(request, 'detail_order.html', {'order': order, 'orderDetails': orderDetails})
+    return render(request, 'order/detail_order.html', {'order': order, 'orderDetails': orderDetails})
 
 def EditOrder_Service(request, id):
     if request.user.is_authenticated == False:
@@ -72,7 +72,7 @@ def EditOrder_Service(request, id):
         orderDetails = OrderDetail.objects.filter(order=order)
         products = Product.objects.filter(user=request.user)
         customers = Customer.objects.filter(user=request.user)
-        return render(request, 'edit_order.html', {'order': order, 'orderDetails': orderDetails, 'products': products, 'customers': customers})
+        return render(request, 'order/edit_order.html', {'order': order, 'orderDetails': orderDetails, 'products': products, 'customers': customers})
     if request.method == 'POST':
         #get id from url parameter
         customer_id = request.POST.get('customer')

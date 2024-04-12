@@ -1,0 +1,258 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Thêm sửa chi tiết hóa đơn{% endblock title %}
+{% block content %}
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Trang sửa thêm chi tiết hóa đơn</h4>
+          <form class="forms-sample" method="POST" action="/order/edit/{{order.id}}/">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputUsername1">Khách hàng</label>
+              <select name="customer" class="form-control" value="{{order.customer.id}}" style="color: black;" required>
+                {% for customer in customers %}
+                <option value="{{ customer.id }}">{{ customer.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <lable>Danh sách các sản phẩm</lable>
+            </div>
+            <div class="table-responsive mt-4">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in orderDetails %}
+                  <tr>
+                    <td>
+                      <select name="product" class="productSelect form-control" style="color: black;">
+                        {% for product in products %}
+                        <option value="{{ product.id }}" data-price="{{ product.price|floatformat:" 0"|intcomma }}" {%
+                          if product.id==item.product.id %}selected{% endif %}>{{ product.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                    <td class="productPrice"></td>
+                    <td><input type="number" class="quantity" min="1" value="{{item.quantity}}"></td>
+                    <td>
+                      <span class="totalAmount"></span>
+                    </td>
+                    <td>
+                      <button type="button" class="removeProductButton btn btn-primary">Xóa sản phẩm</button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <button type="submit" class="btn btn-primary me-2" id="addProductButton">Thêm sản phẩm</button>
+            <div class="form-group">
+              <label>Tổng tiền</label>
+              <input name="Total" type="text" class="form-control" disabled required>
+            </div>
+            <div class="form-group">
+              <label>Trạng thái đơn hàng</label>
+              <select name="status" class="form-control" style="color: black;" required>
+                <option value="0">Vừa mới tạo đơn hàng</option>
+                <option value="1">Đang giao hàng</option>
+                <option value="2">Đã giao hàng thành công</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ghi chú</label>
+              <input name="discrption" type="text" class="form-control" placeholder="Ghi chú">
+            </div>
+            <button id="submitOrder" type="submit" class="btn btn-primary me-2">Xác nhận</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var datepicker = document.querySelector("#datepicker-income-table");
+    $(datepicker).datepicker({
+      format: "dd/mm/yyyy",
+      todayHighlight: true,
+      autoclose: true,
+    });
+
+    // Helper function to get price from option
+    function getPrice(option) {
+      return parseFloat(option.getAttribute('data-price').replace(/,/g, ''));
+    }
+
+    // Helper function to update price and total amount
+    function updatePriceAndTotal(productSelect, productPrice, quantityInput, totalAmount) {
+      const selectedOption = productSelect.options[productSelect.selectedIndex];
+      const price = getPrice(selectedOption);
+      const quantity = quantityInput.value;
+
+      // Update price and total amount
+      productPrice.textContent = price;
+      totalAmount.textContent = price * quantity;
+      calculateTotalPrice();
+    }
+
+    // Helper function to calculate total price
+    function calculateTotalPrice() {
+      // Get all total amount elements
+      let totalPrice = 0;
+      const totalAmounts = document.querySelectorAll('.totalAmount, #totalAmountNew');
+      console.log(totalAmounts);
+
+      // Calculate total price
+      totalAmounts.forEach((totalAmount) => {
+        totalPrice += Number(totalAmount.textContent.replace(/,/g, ''));
+      });
+
+      // Update total price input field
+      const totalPriceInput = document.querySelector('input[name="Total"]');
+      totalPriceInput.value = totalPrice;
+    }
+
+    // Initialize
+    const productSelects = document.querySelectorAll('.productSelect');
+    const productPrices = document.querySelectorAll('.productPrice');
+    const quantityInputs = document.querySelectorAll('.quantity');
+    const totalAmounts = document.querySelectorAll('.totalAmount');
+
+
+    // Event listeners
+    productSelects.forEach((productSelect, index) => {
+      productSelect.addEventListener('change', () => updatePriceAndTotal(productSelect, productPrices[index], quantityInputs[index], totalAmounts[index]));
+    });
+
+    quantityInputs.forEach((quantityInput, index) => {
+      quantityInput.addEventListener('input', () => updatePriceAndTotal(productSelects[index], productPrices[index], quantityInput, totalAmounts[index]));
+    });
+
+    // Initial update
+    productSelects.forEach((productSelect, index) => {
+      updatePriceAndTotal(productSelect, productPrices[index], quantityInputs[index], totalAmounts[index]);
+    });
+
+
+    const removeButtons = document.querySelectorAll('.removeProductButton');
+    removeButtons.forEach((button, index) => {
+      if (index == 0) return;
+      button.addEventListener('click', (event) => {
+        const row = event.target.closest('tr');
+        row.parentNode.removeChild(row);
+        calculateTotalPrice();
+      });
+    });
+
+
+    document.getElementById('addProductButton').addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Create new row and cells
+      const newRow = document.createElement('tr');
+      const [selectCell, priceCell, quantityCell, totalCell, deleteCell] = Array(5).fill().map(() => document.createElement('td'));
+
+      // Create new elements
+      const select = productSelects[0].cloneNode(true);
+      const quantity = quantityInputs[0].cloneNode(true);
+      const total = totalAmounts[0].cloneNode(true);
+      const deleteButton = document.createElement('button');
+
+      // Set properties for new elements
+      select.id += 'New';
+      quantity.id += 'New';
+      priceCell.id = 'productPriceNew';
+      totalCell.id = 'totalAmountNew';
+      deleteButton.textContent = 'Xóa sản phẩm';
+      deleteButton.className = 'btn btn-primary removeProductButton';
+
+      // Append new elements to new cells
+      [selectCell, quantityCell, totalCell, deleteCell].forEach((cell, i) => cell.appendChild([select, quantity, total, deleteButton][i]));
+
+      // Append new cells to new row
+      [selectCell, priceCell, quantityCell, totalCell, deleteCell].forEach(cell => newRow.appendChild(cell));
+
+      // Append new row to table
+      productSelects[0].parentNode.parentNode.parentNode.appendChild(newRow);
+
+      // Apply logic to new row
+      select.addEventListener('change', () => { updatePriceAndTotalNew(); calculateTotalPrice(); })
+      quantity.addEventListener('input', () => { updatePriceAndTotalNew(); calculateTotalPrice(); })
+
+      // Add event listener to new delete button
+      deleteButton.addEventListener('click', function (event) {
+        const row = event.target.closest('tr');
+        row.parentNode.removeChild(row);
+        calculateTotalPrice();
+      });
+
+      function updatePriceAndTotalNew() {
+        const selectedOption = select.options[select.selectedIndex];
+        const price = parseFloat(selectedOption.getAttribute('data-price').replace(/,/g, ''));
+        const quantityValue = quantity.value;
+
+        // Update price and total amount
+        priceCell.textContent = price;
+        totalCell.textContent = price * quantityValue;
+      }
+      updatePriceAndTotalNew();
+      calculateTotalPrice();
+    });
+
+    const submitOrder = document.getElementById('submitOrder');
+
+    submitOrder.addEventListener('click', function (e) {
+      e.preventDefault();
+      const form = document.querySelector('form');
+      // check required fields
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+      requiredFields.forEach((field) => {
+        if (!field.value) {
+          isValid = false;
+        }
+      });
+      if (isValid) {
+        // get all product, quantity in table into object
+        const products = [];
+        const productRows = document.querySelectorAll('table tbody tr');
+        productRows.forEach((row) => {
+          const productSelect = row.querySelector('select');
+          const quantityInput = row.querySelector('input');
+          const product = {
+            id: productSelect.value,
+            quantity: quantityInput.value,
+          };
+          products.push(product);
+        });
+
+        // add products to form
+        const productsInput = document.createElement('input');
+        productsInput.type = 'hidden';
+        productsInput.name = 'products';
+        productsInput.value = JSON.stringify(products);
+        form.appendChild(productsInput);
+        form.submit();
+
+      } else {
+        alert('Vui lòng điền đầy đủ thông tin');
+      }
+    });
+
+  });
+
+
+</script>
+{% endblock content %}

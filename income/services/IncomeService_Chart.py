@@ -8,7 +8,7 @@ def IncomeChart_Service(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
-    return render(request, 'income_chart.html')
+    return render(request, 'income/income_chart.html')
 
 def IncomeDataChar_Service(request):
     if request.user.is_authenticated == False:

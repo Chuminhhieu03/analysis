@@ -8,7 +8,7 @@ def ExpenseChart_Service(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
-    return render(request, 'expenses_chart.html')
+    return render(request, 'expense/expenses_chart.html')
 
 
 def ExpenseDataChar_Service(request):

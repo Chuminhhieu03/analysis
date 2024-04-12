@@ -9,9 +9,10 @@ from ..utils import generate_token
 from django.conf import settings
 from ..models import UserProfile, UserUpgrade
 
+
 def SignUp_Service(request):
     if request.method == "GET":
-        return render(request, 'signup.html')
+        return render(request, 'user/signup.html')
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
@@ -20,16 +21,17 @@ def SignUp_Service(request):
         typeUser = request.POST['typeUser']
         # check username is already exist or not
         if User.objects.filter(username=username).exists():
-            messages.warning(request, "Tài khoản này đã tồn tại trong hệ thống")
-            return render(request, 'signup.html')
+            messages.warning(
+                request, "Tài khoản này đã tồn tại trong hệ thống")
+            return render(request, 'user/signup.html')
         # check email is already exist or not
         if User.objects.filter(email=email).exists():
             messages.warning(request, "Email này đã tồn tại")
-            return render(request, 'signup.html')
+            return render(request, 'user/signup.html')
         # check password is match or not
         if pass1 != pass2:
             messages.warning(request, "Mật khẩu không khớp")
-            return render(request, 'signup.html')
+            return render(request, 'user/signup.html')
         # create
         user = User.objects.create_user(
             username=username, email=email, password=pass1)
@@ -42,7 +44,7 @@ def SignUp_Service(request):
         user.userupgrade.save()
         user.save()
         email_subject = "Kích hoạt tài khoản"
-        message = render_to_string('activate_account.html', {
+        message = render_to_string('user/activate_account.html', {
             'user': user,
             'domain': '127.0.0.1:8000',
             'uid':  urlsafe_base64_encode(force_bytes(user.pk)),
@@ -53,4 +55,4 @@ def SignUp_Service(request):
         email_message.send()
         messages.success(
             request, "Tài khoản của bạn đã được tạo thành công, vui lòng kích hoạt")
-        return render(request, 'login.html')
+        return render(request, 'user/login.html')

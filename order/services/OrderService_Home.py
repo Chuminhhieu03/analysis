@@ -35,4 +35,4 @@ def HomeOrder_Service(request):
         paginator = Paginator(orders, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'order_table.htmL', {'page_obj': page_obj})
+        return render(request, 'order/order_table.html', {'page_obj': page_obj})

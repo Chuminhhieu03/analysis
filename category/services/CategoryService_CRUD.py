@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from ..models import Category
 from datetime import datetime
 
+
 def CategoryAdd_Service(request):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
@@ -11,7 +12,7 @@ def CategoryAdd_Service(request):
         messages.warning(request, "Bạn không phải tài khoản doanh nghiệp")
         return redirect('login')
     if request.method == 'GET':
-        return render(request, 'add_category.html')
+        return render(request, 'category/add_category.html')
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
@@ -24,6 +25,7 @@ def CategoryAdd_Service(request):
         messages.success(request, "Thêm loạt mặt hàng thành công")
         return redirect('category')
 
+
 def EditCategory_Service(request, id):
     if request.user.is_authenticated == False:
         messages.warning(request, "Bạn chưa đăng nhập")
@@ -33,7 +35,7 @@ def EditCategory_Service(request, id):
         return redirect('login')
     category = Category.objects.get(id=id)
     if request.method == 'GET':
-        return render(request, 'edit_category.html', {'category': category})
+        return render(request, 'category/edit_category.html', {'category': category})
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
@@ -43,6 +45,7 @@ def EditCategory_Service(request, id):
         category.save()
         messages.success(request, "Sửa loại mặt hình thành công")
         return redirect('category')
+
 
 def DeleteCategory_Service(request, id):
     if request.user.is_authenticated == False:

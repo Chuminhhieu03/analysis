@@ -13,7 +13,7 @@ def AddCustomer_Service(request):
         messages.warning(request, "Bạn không phải tài khoản doanh nghiệp")
         return redirect('login')
     if request.method == 'GET':
-        return render(request, 'add_customer.html')
+        return render(request, 'customer/add_customer.html')
     if request.method == 'POST':
         user = request.user
         name = request.POST.get('name')
@@ -46,7 +46,7 @@ def EditCustomer_Service(request, id):
         return redirect('login')
     customer = Customer.objects.get(id=id)
     if request.method == 'GET':
-        return render(request, 'edit_customer.html', {'customer': customer})
+        return render(request, 'customer/edit_customer.html', {'customer': customer})
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')

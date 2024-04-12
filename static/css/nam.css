@@ -75,7 +75,7 @@
 
 .user-profile-head .nav-tabs .nav-link.active {
     border: none;
-    border-bottom: 2px solid #0062cc;
+    /* border-bottom: 2px solid #0062cc; */
 }
 
 .profile-work {
@@ -112,7 +112,7 @@
 
 body {
     margin-top: 20px;
-    background-color: #f2f6fc;
+    background-color: #f4f5f7;
     color: #69707a;
 }
 

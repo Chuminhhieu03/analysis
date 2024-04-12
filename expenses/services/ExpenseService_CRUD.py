@@ -9,7 +9,7 @@ def ExpenseAdd_Service(request):
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
     if request.method == 'GET':
-        return render(request, 'add_expenses.html')
+        return render(request, 'expense/add_expenses.html')
     if request.method == 'POST':
         user = request.user
         amount = request.POST['amount']
@@ -31,7 +31,7 @@ def ExpenseEdit_Service(request, id):
         expenses = Expenses.objects.get(id=id)
         expenses.date = expenses.date.strftime('%d/%m/%Y')
         expenses.amount = int(expenses.amount)
-        return render(request, 'edit_expenses.html', {'expenses': expenses})
+        return render(request, 'expense/edit_expenses.html', {'expenses': expenses})
     if request.method == 'POST':
         expenses = Expenses.objects.get(id=id)
         expenses.amount = request.POST['amount']

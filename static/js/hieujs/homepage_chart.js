@@ -58,7 +58,7 @@ function createLineChartMonth(dataIncome, dataExpenses) {
       ],
     },
     options: {
-      aspectRatio: 3,
+      maintainAspectRatio: false,
       scales: {
         yAxes: [
           {
@@ -119,7 +119,7 @@ function createLineChartYear(dataIncome, dataExpenses) {
       ],
     },
     options: {
-      aspectRatio: 3,
+      maintainAspectRatio: false,
       scales: {
         yAxes: [
           {
@@ -154,6 +154,4 @@ document.addEventListener("DOMContentLoaded", function () {
         data.data_expense_this_year
       );
     });
-  // createLineChartMonth();
-  // createLineChartYear();
 });

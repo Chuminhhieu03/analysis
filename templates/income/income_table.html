@@ -1,0 +1,186 @@
+{% extends 'base/base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title%}Bảng Thu nhập{%endblock title %}
+{% block content %}
+
+<div class="content-wrapper table-page">
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Bảng Thu nhập</h4>
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="row text-center">
+
+                <div class="inner-wrap col-lg-6 col-md-12">
+                  <!-- tim kiem thu nhap -->
+                  <form method="GET" action="{% url 'income' %}"
+                    class="btn-wrapper d-flex justify-content-end align-center" style="align-items: baseline">
+                    <input type="text" name="q" class="form-control" id="searchField" placeholder="Tìm kiếm"
+                      style="height: 100%;" />
+                    <button class="btn btn-info align-items-center">
+                      <i class="mdi mdi-magnify"></i>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- tai khoan da nang cap  -->
+                {% if request.user.userupgrade.upgrade == True %}
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- import excel  -->
+                  <button id="income_import_btn" class="btn btn-otline-dark align-items-center">
+                    <i class="icon-upload"></i>
+                    <span>Import</span>
+                  </button>
+
+                  <form action="/income/import_excel" method="POST" id="income_import_form"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input name="file" type="file" id="fileInput" accept=".xls,.xlsx" style="display: none;">
+                  </form>
+                </div>
+
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- export excel  -->
+                  <a href="/income/create_pdf" class="btn btn-otline-dark">
+                    <i class="icon-download"></i>
+                    <span>Export</span>
+                  </a>
+                </div>
+
+                <!-- tai khoan chua nang cap  -->
+                {% else %}
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- import excel  -->
+                  <button id="income_import_btn" class="btn btn-otline-dark align-items-center" disabled>
+                    <i class="icon-upload"></i>
+                    <span>Cần nâng cấp</span>
+                  </button>
+                </div>
+
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- export excel  -->
+                  <button href="/income/create_pdf" class="btn btn-otline-dark" disabled>
+                    <i class="icon-download"></i>
+                    <span>Cần nâng cấp</span>
+                  </button>
+                </div>
+                {% endif %}
+
+                <div class="inner-wrap col-lg-2 col-md-4 col-sm-4 col-4">
+                  <!-- them chi tieu -->
+                  <a href="/income/add" class="btn btn-primary text-white me-0">
+                    <i class="mdi mdi-plus-circle-outline"></i>
+                    <span>Thêm</span>
+                  </a>
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Số tiền</th>
+                  <th>Nguồn</th>
+                  <th>Ngày tạo</th>
+                  <th>Ghi chú</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for income in page_obj %}
+                <tr>
+                  <td>{{ income.amount|floatformat:"0"|intcomma }} VNĐ</td>
+                  <td>
+                    {% if request.user.userprofile.type == "1" %}
+                    {% if income.source == "0" %}
+                    Sản phẩm
+                    {% elif income.source == "1" %}
+                    Dịch vụ
+                    {% elif income.source == "2" %}
+                    Quảng cáo
+                    {% else %}
+                    Khác
+                    {% endif %}
+                    {% else %}
+                    {% if income.source == "0" %}
+                    Lương
+                    {% elif income.source == "1" %}
+                    Kinh Doanh
+                    {% elif income.source == "2" %}
+                    Phụ thu nhập
+                    {% else %}
+                    Khác
+                    {% endif %}
+                    {% endif %}
+                  </td>
+                  <td>{{ income.date|date:"d/m/Y" }}</td>
+                  <td>{{income.description}}</td>
+                  <td>
+                    <a href="/income/edit/{{income.id}}" class="btn btn-outline-dark align-items-center me-2">
+                      <i class="mdi mdi-grease-pencil" style="vertical-align: middle"></i>
+                    </a>
+                    <button type="button" class="delete_income_btn btn btn-outline-dark align-items-center me-2">
+                      <i class="mdi mdi-delete" style="vertical-align: middle"></i>
+                    </button>
+                  </td>
+                </tr>
+                <form class="form_delete_income" method="POST" action="/income/delete/{{income.id}}">
+                  {% csrf_token %}
+                </form>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="pagination">
+              <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // delete income
+  document.addEventListener("DOMContentLoaded", function () {
+    var delete_income_btn = document.getElementsByClassName("delete_income_btn");
+    var form_delete_income = document.getElementsByClassName("form_delete_income");
+    console.log(form_delete_income.length);
+    for (let i = 0; i < delete_income_btn.length; i++) {
+      delete_income_btn[i].addEventListener("click", function () {
+        var result = confirm("Bạn có chắc chắn muốn xóa thu nhập này không?");
+        if (result) {
+          form_delete_income[i].submit();
+        }
+      });
+    }
+  });
+
+
+</script>
+<script src="{% static 'js/hieujs/income_import.js' %}"></script>
+{% endblock content %}

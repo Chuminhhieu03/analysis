@@ -9,7 +9,7 @@ def IncomeAdd_Service(request):
         messages.warning(request, "Bạn chưa đăng nhập")
         return redirect('login')
     if request.method == 'GET':
-        return render(request, 'add_income.html')
+        return render(request, 'income/add_income.html')
     if request.method == 'POST':
         user = request.user
         amount = request.POST['amount']
@@ -30,7 +30,7 @@ def IncomeEdit_Service(request, id):
         income = Income.objects.get(id=id)
         income.date = income.date.strftime('%d/%m/%Y')
         income.amount = int(income.amount)
-        return render(request, 'edit_income.html', {'income': income})
+        return render(request, 'income/edit_income.html', {'income': income})
     if request.method == 'POST':
         income = Income.objects.get(id=id)
         income.amount = request.POST['amount']

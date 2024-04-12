@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.db.models import Q, Sum
+from ..models import Customer
+from order.models import Order
 from django.core.paginator import Paginator
 
 def HomeCustomer_Service(request):
@@ -31,4 +33,4 @@ def HomeCustomer_Service(request):
         paginator = Paginator(customers, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'customer_table.htmL', {'page_obj': page_obj})
+        return render(request, 'customer/customer_table.htmL', {'page_obj': page_obj})

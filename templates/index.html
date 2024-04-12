@@ -1,7 +1,7 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base/base.html' %}
+{% load static %}
 {% load humanize %}
-{% block title %}Trang chủ{%endblock title %} 
+{% block title %}Trang chủ{%endblock title %}
 {% block content %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -11,112 +11,76 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="home-tab">
-        <div
-          class="d-sm-flex align-items-center justify-content-between border-bottom"
-        >
+        <div class="d-sm-flex align-items-center justify-content-between border-bottom">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-              <a
-                class="nav-link active ps-0"
-                id="home-tab"
-                data-bs-toggle="tab"
-                href="#overview"
-                role="tab"
-                aria-controls="overview"
-                aria-selected="true"
-                >Tổng quan</a
-              >
+              <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="#overview" role="tab"
+                aria-controls="overview" aria-selected="true">Tổng quan</a>
             </li>
           </ul>
         </div>
         <div class="tab-content tab-content-basic">
-          <div
-            class="tab-pane fade show active"
-            id="overview"
-            role="tabpanel"
-            aria-labelledby="overview"
-          >
+          <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
             <div class="row">
               <div class="col-sm-12">
-                <div
-                  class="statistics-details d-flex align-items-center justify-content-between"
-                >
+                <div class="statistics-details d-flex align-items-center justify-content-between">
                   <div class="col-md-3">
                     <p class="statistics-title">Tổng thu nhập tháng này</p>
                     <h3 class="rate-percentage" id="hp_sumIncome">
                       {{sumIncome | intcomma}} VND
                     </h3>
-                    {% if percentIncome < 0 %}
-                    <p class="text-danger d-flex">
-                      <i class="mdi mdi-menu-down"></i
-                      ><span id="hp_percentIncome"
-                        >{{percentIncome | floatformat:"2" }} % So với tháng trước</span
-                      >
-                    </p>
-                    {% else %}
-                    <p class="text-success d-flex">
-                      <i class="mdi mdi-menu-up"></i
-                      ><span id="hp_percentIncome"
-                        >{{percentIncome | floatformat:"2"}}% So với tháng trước</span
-                      >
-                    </p>
-                    {% endif %}
+                    {% if percentIncome < 0 %} <p class="text-danger d-flex">
+                      <i class="mdi mdi-menu-down"></i><span id="hp_percentIncome">{{percentIncome | floatformat:"2" }}
+                        % So với tháng trước</span>
+                      </p>
+                      {% else %}
+                      <p class="text-success d-flex">
+                        <i class="mdi mdi-menu-up"></i><span id="hp_percentIncome">{{percentIncome | floatformat:"2"}}%
+                          So với tháng trước</span>
+                      </p>
+                      {% endif %}
                   </div>
                   <div class="col-md-3">
                     <p class="statistics-title">Tổng chi tiêu tháng này</p>
                     <h3 class="rate-percentage" id="hp_sumExpense">
                       {{sumExpense | intcomma}} VND
                     </h3>
-                    {% if percentExpense < 0 %}
-                    <p class="text-danger d-flex">
-                      <i class="mdi mdi-menu-down"></i
-                      ><span id="hp_percentExpense"
-                        >{{percentExpense | floatformat:"2"}}% So với tháng trước</span
-                      >
-                    </p>
-                    {% else %}
-                    <p class="text-success d-flex">
-                      <i class="mdi mdi-menu-up"></i
-                      ><span id="hp_percentExpense"
-                        >{{percentExpense | floatformat:"2"}}% So với tháng trước</span
-                      >
-                    </p>
-                    {% endif %}
+                    {% if percentExpense < 0 %} <p class="text-danger d-flex">
+                      <i class="mdi mdi-menu-down"></i><span id="hp_percentExpense">{{percentExpense | floatformat:"2"}}% So với tháng trước</span>
+                      </p>
+                      {% else %}
+                      <p class="text-success d-flex">
+                        <i class="mdi mdi-menu-up"></i><span id="hp_percentExpense">{{percentExpense | floatformat:"2"}}% So với tháng trước</span>
+                      </p>
+                      {% endif %}
                   </div>
                   <div class="col-md-3">
                     <p class="statistics-title">Lợi nhuận tháng này</p>
                     <h3 class="rate-percentage" id="hp_sumProfit">
                       {{sumProfit | intcomma}} VND
                     </h3>
-                    {% if percentProfit < 0 %}
-                    <p class="text-danger d-flex">
-                      <i class="mdi mdi-menu-down"></i
-                      ><span id="hp_percentProfit"
-                        >{{percentProfit|floatformat:"2"}}% So với tháng trước</span
-                      >
-                    </p>
-                    {% else %}
-                    <p class="text-success d-flex">
-                      <i class="mdi mdi-menu-up"></i
-                      ><span id="hp_percentProfit"
-                        >{{percentProfit|floatformat:"2"}}% So với tháng trước</span
-                      >
-                    </p>
-                    {% endif %}
+                    {% if percentProfit < 0 %} <p class="text-danger d-flex">
+                      <i class="mdi mdi-menu-down"></i><span id="hp_percentProfit">{{percentProfit|floatformat:"2"}}% So
+                        với tháng trước</span>
+                      </p>
+                      {% else %}
+                      <p class="text-success d-flex">
+                        <i class="mdi mdi-menu-up"></i><span id="hp_percentProfit">{{percentProfit|floatformat:"2"}}% So
+                          với tháng trước</span>
+                      </p>
+                      {% endif %}
                   </div>
                   <div class="col-md-3">
                     <p class="statistics-title">Bạn có đang là VIP</p>
                     {% if request.user.userupgrade.upgrade == False %}
                     <h3 class="rate-percentage">Không</h3>
                     <p class="text-danger d-flex">
-                      <i class="mdi mdi-menu-down"></i
-                      ><span>Hãy nâng cấp tài khoản nào</span>
+                      <i class="mdi mdi-menu-down"></i><span>Hãy nâng cấp tài khoản nào</span>
                     </p>
                     {% else %}
                     <h3 class="rate-percentage">Có</h3>
                     <p class="text-success d-flex">
-                      <i class="mdi mdi-menu-up"></i
-                      ><span>Chúc mừng bạn đã là VIP</span>
+                      <i class="mdi mdi-menu-up"></i><span>Chúc mừng bạn đã là VIP</span>
                     </p>
                     {% endif %}
                   </div>
@@ -126,14 +90,10 @@
             <div class="row">
               <div class="col-lg-12 d-flex flex-column">
                 <div class="row flex-grow">
-                  <div
-                    class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card"
-                  >
+                  <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
                     <div class="card card-rounded">
                       <div class="card-body">
-                        <div
-                          class="d-sm-flex justify-content-between align-items-start"
-                        >
+                        <div class="d-sm-flex justify-content-between align-items-start">
                           <div>
                             <h4 class="card-title card-title-dash">
                               Đồ thị biểu diễn thu chi của Năm
@@ -152,34 +112,32 @@
             </div>
             <div class="row">
               <div class="col-lg-12 d-flex flex-column">
-                  <div class="row flex-grow">
-                      <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
-                          <div class="card card-rounded">
-                              <div class="card-body">
-                                  <div class="d-sm-flex justify-content-between align-items-start">
-                                      <div>
-                                          <h4 class="card-title card-title-dash">Đồ thị biểu diễn thu chi của tháng</h4>
-                                      </div>
-                                      <div id="performance-line-legend"></div>
-                                  </div>
-                                  <div class="mt-5 homepageLineMonth">
-                                      <div style="overflow-x: auto;">
-                                          <canvas id="lineChartMonth" class="chartjs-render-monitor"></canvas>
-                                      </div>
-                                  </div>
-                              </div>
+                <div class="row flex-grow">
+                  <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
+                    <div class="card card-rounded">
+                      <div class="card-body">
+                        <div class="d-sm-flex justify-content-between align-items-start">
+                          <div>
+                            <h4 class="card-title card-title-dash">Đồ thị biểu diễn thu chi của tháng</h4>
                           </div>
+                          <div id="performance-line-legend"></div>
+                        </div>
+                        <div class="mt-5 homepageLineMonth">
+                          <div style="overflow-x: auto;">
+                            <canvas id="lineChartMonth" class="chartjs-render-monitor"></canvas>
+                          </div>
+                        </div>
                       </div>
+                    </div>
                   </div>
+                </div>
               </div>
-          </div>
+            </div>
             <div class="row">
               <div class="col-12 grid-margin stretch-card">
                 <div class="card card-rounded">
                   <div class="card-body">
-                    <div
-                      class="d-sm-flex justify-content-between align-items-start"
-                    >
+                    <div class="d-sm-flex justify-content-between align-items-start">
                       <div>
                         <h4 class="card-title card-title-dash">
                           Bảng chuyển đổi tiền tệ giữa các quốc gia
