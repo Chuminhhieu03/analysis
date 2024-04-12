@@ -28,24 +28,22 @@
                 </tr>
               </thead>
               <tbody>
+                {% for item in orderDetails %}
                 <tr>
-                  {% for item in orderDetails %}
                   <td>
                     <input name="product" type="text" class="form-control" value="{{item.product_name}}" readonly>
                   </td>
                   <td id="productPrice">
-                    <input name="product" type="text" class="form-control" value="{{item.product_price |floatformat:"
-                      0"|intcomma }}" readonly>
+                    <input name="product" type="text" class="form-control" value="{{item.product_price |floatformat:"0"| intcomma }}" readonly>
                   </td>
                   <td>
                     <input name="quantity" type="text" class="form-control" value="{{item.quantity}}" readonly>
                   </td>
                   <td>
-                    <input name="totalAmount" type="text" class="form-control" value="{{item.total|floatformat:"
-                      0"|intcomma }}" readonly>
+                    <input name="totalAmount" type="text" class="form-control" value="{{item.total|floatformat:" 0"|intcomma }}" readonly>
                   </td>
-                  {% endfor %}
                 </tr>
+                {% endfor %}
               </tbody>
             </table>
             <div class="form-group">

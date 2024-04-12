@@ -5,7 +5,6 @@ from income.models import Income
 import random
 class Command(BaseCommand):
     help = 'Creates fake income data'
-
     def handle(self, *args, **options):
 
         Income.objects.all().delete()

@@ -3,15 +3,10 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
   <ul class="nav">
     <li class="nav-item">
-      <a
-        class="nav-link"
-        href="#home"
-        data-bs-toggle="collapse"
-        aria-expanded="false"
-        aria-controls="income"
-      >
-        <i class="mdi mdi-grid-large menu-icon"></i>
-        <span class="menu-title">Tổng quan</span>
+        <a class="nav-link" href="/">
+          <i class="mdi mdi-grid-large menu-icon"></i>
+          <span class="menu-title">Tổng quan</span>
+        </a>
       </a>
     </li>
     <li class="nav-item nav-category">Quản lý thu nhập</li>
@@ -62,6 +57,7 @@
         </ul>
       </div>
     </li>
+    {% if request.user.userprofile.type == "1" %}
     <li class="nav-item nav-category">Quản lý doanh nghiệp</li>
     <li class="nav-item">
       <a
@@ -149,6 +145,7 @@
         </ul>
       </div>
     </li>
+    {% endif %}
     <li class="nav-item nav-category">Trang khác</li>
     <li class="nav-item">
       <a
@@ -181,35 +178,16 @@
         {% comment %} <i class="menu-arrow"></i> {% endcomment %}
       </a>
     </li>
+    <li class="nav-item nav-category">Nâng cấp tài khoản</li>
+    <li class="nav-item">
+      <a class="nav-link" href="/user/upgrade/">
+        <i class="menu-icon mdi mdi-clipboard-outline"></i>
+        {% if request.user.userupgrade.upgrade == False %}
+          <span class="menu-title">Nâng cấp tài khoản</span> 
+        {% endif %} {% if request.user.userupgrade.upgrade == True %}
+        <span class="menu-title">Thông tin nâng cấp tài khoản</span> 
+        {% endif %}
+      </a>
+    </li>
   </ul>
-  {% if request.user.userupgrade.upgrade == False %}
-  <div class="sidebar_upgrade_btn">
-    <button
-      id="upgrade_btn"
-      type="button"
-      class="btn btn-primary btn-icon-text"
-    >
-      <i class="ti-user btn-icon-prepend"></i>
-      Nâng cấp tài khoản
-    </button>
-  </div>
-  {% endif %} {% if request.user.userupgrade.upgrade == True %}
-  <div class="sidebar_upgrade_btn">
-    <button
-      id="upgrade_btn"
-      type="button"
-      class="btn btn-primary btn-icon-text"
-    >
-      <i class="ti-user btn-icon-prepend"></i>
-      Thông tin tài khoản đã nâng cấp
-    </button>
-  </div>
-  {% endif %}
 </nav>
-<script>
-  var btn = document.getElementById("upgrade_btn");
-  btn.addEventListener("click", function () {
-    // redirect
-    window.location.href = "/user/upgrade/";
-  });
-</script>

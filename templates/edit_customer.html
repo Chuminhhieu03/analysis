@@ -12,11 +12,11 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="exampleInputUsername1">Tên</label>
-              <input name="name" type="text" class="form-control" placeholder="Nhập tên" value="{{customer.name}}">
+              <input name="name" type="text" class="form-control" placeholder="Nhập tên" value="{{customer.name}}" required>
             </div>
             <div class="form-group">
               <label for="exampleInputUsername1">Số điện thoại</label>
-              <input name="phone" type="text" class="form-control" placeholder="Nhập số điện thoại" value="{{customer.phone}}">
+              <input name="phone" type="text" class="form-control" placeholder="Nhập số điện thoại" value="{{customer.phone}}" required>
             </div>
             <div class="form-group">
               <label>Địa chỉ</label>

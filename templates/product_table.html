@@ -42,6 +42,7 @@
                   <th>Giá</th>
                   <th>Ngày sửa</th>
                   <th>Ghi chú</th>
+                  <th>Doanh thu</th>
                   <th></th>
                 </tr>
               </thead>
@@ -55,6 +56,7 @@
                   <td>{{ product.price|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>{{ product.updated_at|date:"d/m/Y" }}</td>
                   <td>{{product.description}}</td>
+                  <td>{{ product.revenue|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>
                     <a
                       href="/product/edit/{{product.id}}"

@@ -41,6 +41,7 @@
                   <th>Tên khách hàng</th>
                   <th>Số điện thoại</th>
                   <th>Địa chỉ</th>
+                  <th>Doanh thu</th>
                   <th></th>
                 </tr>
               </thead>
@@ -53,6 +54,7 @@
                   <td>{{customer.name}}</td>
                   <td>{{customer.phone}}</td>
                   <td>{{customer.address}}</td>
+                  <td>{{ customer.revenue|floatformat:"0"|intcomma }} VNĐ</td>
                   <td>
                     <a
                       href="/customer/edit/{{customer.id}}"

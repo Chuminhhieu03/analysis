@@ -21,6 +21,7 @@
             <div class="card-body text-center">
               <!-- Profile picture image-->
               <img
+                id="image_preview"
                 class="img-account-profile rounded-circle mb-2"
                 src="{{request.user.userprofile.avatar.url}}"
                 alt=""
@@ -178,11 +179,14 @@
       autoclose: true,
     });
   });
-  // create a text when a file is selected by document id
-  document
-    .getElementById("inputGroupFile01")
-    .addEventListener("change", function () {
-      document.getElementById("notiInputFile").innerHTML = "Bạn đã chọn ảnh";
+  
+  var inputImage = document.getElementById("inputGroupFile01");
+  var imagePreview = document.getElementById("image_preview");
+
+  inputImage.addEventListener("change", function () {
+      var file = inputImage.files[0];
+      var fileURL = URL.createObjectURL(file);
+      imagePreview.src = fileURL;
     });
 </script>
 {% endblock content %}

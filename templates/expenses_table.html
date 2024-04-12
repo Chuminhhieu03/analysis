@@ -141,7 +141,7 @@
     console.log(form_delete_expenses.length);
     for (let i = 0; i < delete_expenses_btn.length; i++) {
       delete_expenses_btn[i].addEventListener("click", function () {
-        var result = confirm("Bạn có chắc chắn muốn xóa thu nhập này không?");
+        var result = confirm("Bạn có chắc chắn muốn xóa chi tiêu này không?");
         if (result) {
           form_delete_expenses[i].submit();
         }

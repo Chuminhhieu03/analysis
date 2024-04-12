@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from category.models import Category
+# from order.models import OrderDetail
 
 # Create your models here.
 class Product(models.Model):
@@ -17,5 +18,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name + ' - ' + str(self.price)
+    
+    # def get_total_revenue(self):
+    #     order_details = OrderDetail.objects.filter(product=self, order__status=2)
+    #     total_revenue = sum([od.total for od in order_details])
+    #     return total_revenue
 
       
