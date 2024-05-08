@@ -58,13 +58,14 @@ function createLineChartMonth(dataIncome, dataExpenses) {
       ],
     },
     options: {
+      responsive: true,
       maintainAspectRatio: false,
       scales: {
         yAxes: [
           {
             gridLines: {
               display: true,
-              lineWidth: 0.5, // Adjust this value as needed
+              lineWidth: 0.5,
             },
           },
         ],
@@ -76,9 +77,16 @@ function createLineChartMonth(dataIncome, dataExpenses) {
           },
         ],
       },
+      padding: {
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10,
+      },
     },
   });
 }
+
 function createLineChartYear(dataIncome, dataExpenses) {
   var ctx = document.getElementById("lineChartYear").getContext("2d");
   var lineChartMonth = new Chart(ctx, {

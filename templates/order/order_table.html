@@ -34,16 +34,8 @@
                     <span>Thêm</span>
                   </a>
                 </div>
-
-
-
-
               </div>
-
             </div>
-
-
-
           </div>
           <div class="table-responsive mt-4">
             <table class="table">
@@ -89,7 +81,7 @@
                     </button>
                   </td>
                 </tr>
-                <form class="form_delete_order" method="POST" action="/order/delete/{{order.id}}">
+                <form class="form_delete_order" method="POST" action="/order/delete/{{order.id}}/">
                   {% csrf_token %}
                 </form>
                 {% endfor %}
@@ -125,7 +117,7 @@
     var form_delete_order = document.getElementsByClassName("form_delete_order");
     for (let i = 0; i < delete_order_btn.length; i++) {
       delete_order_btn[i].addEventListener("click", function () {
-        var result = confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?");
+        var result = confirm("Bạn có chắc chắn muốn xóa đơn hàng này không?");
         if (result) {
           form_delete_order[i].submit();
         }

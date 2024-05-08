@@ -9,7 +9,7 @@ def add(request):
     return AddProduct_Service(request)
 
 def edit(request, id):
-    return EditProduct_Service(request)
+    return EditProduct_Service(request,id)
 
 def delete(request, id):
-    return DeleteProduct_Service(request)
+    return DeleteProduct_Service(request,id)

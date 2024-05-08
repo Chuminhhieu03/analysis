@@ -8,4 +8,4 @@ def LogOut_Service(request):
         return redirect('login')
     auth_logout(request)
     messages.info(request, "Đăng xuất thành công")
-    return redirect('/user/login')
+    return redirect('/  user/login')

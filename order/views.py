@@ -1,5 +1,5 @@
 from .services.OrderService_Home import HomeOrder_Service
-from .services.OrderService_CRUD import AddOrder_Service, DetailOrder_Service, EditOrder_Service
+from .services.OrderService_CRUD import AddOrder_Service, DetailOrder_Service, EditOrder_Service, DeleteOrder_Service
 
 # Create your views here.
 def index(request):
@@ -13,3 +13,6 @@ def detail(request, id):
 
 def edit(request, id):
     return EditOrder_Service(request, id)
+
+def delete(request, id):
+    return DeleteOrder_Service(request, id)

@@ -110,3 +110,15 @@ def EditOrder_Service(request, id):
         order.save()
         messages.success(request, "Sửa đơn hàng thành công")
         return redirect('order')
+
+def DeleteOrder_Service(request,id):
+    if request.user.is_authenticated == False:
+        messages.warning(request, "Bạn chưa đăng nhập")
+        return redirect('login')
+    if request.user.userprofile.type == "0":
+        messages.warning(request, "Bạn không phải tài khoản doanh nghiệp")
+        return redirect('login')
+    order = Order.objects.get(id=id)
+    order.delete()
+    messages.success(request, "Xóa đơn hàng thành công")
+    return redirect('order')
